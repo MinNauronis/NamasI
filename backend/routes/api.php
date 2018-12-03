@@ -21,14 +21,21 @@ use Illuminate\Support\Facades\Route;
 
 //Curtain routes
 Route::get('/curtains', 'CurtainController@getAllAction');
-Route::get('/curtains/{id}', 'CurtainController@getAction');
-Route::post('/curtains/{id}', 'CurtainController@postAction');
-Route::patch('/curtains/{id}', 'CurtainController@patchAction');
-Route::delete('/curtains/{id}', 'CurtainController@deleteAction');
+Route::post('/curtains/', 'CurtainController@postAction');
+Route::get('/curtains/{curtain}', 'CurtainController@getAction');
+Route::put('/curtains/{curtain}', 'CurtainController@putAction');
+Route::patch('/curtains/{curtain}', 'CurtainController@patchAction');
+Route::delete('/curtains/{curtain}', 'CurtainController@deleteAction');
 
 //Schedules routes
-Route::get('/curtains/{slug}/schedules', 'ScheduleController@getAllAction');
-Route::get('/curtains/{slug}/schedules/{id}', 'ScheduleController@getAction');
-Route::post('/curtains/{slug}/schedules/{id}', 'ScheduleController@postAction');
-Route::patch('/curtains/{slug}/schedules/{id}', 'ScheduleController@patchAction');
-Route::delete('/curtains/{slug}/schedules/{id}', 'ScheduleController@deleteAction');
+Route::get('/curtains/{curtain}/schedules', 'ScheduleController@getAllAction');
+Route::post('/curtains/{curtain}/schedules/', 'ScheduleController@postAction');
+Route::get('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@getAction');
+Route::put('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@putAction');
+Route::patch('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@patchAction');
+Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@deleteAction');
+
+//Days routes
+Route::get('/schedules/{schedule}/day', 'WeekdayController@getAllAction');
+Route::get('/schedules/{schedule}/day/{weekday}', 'WeekdayController@getAction');
+Route::put('/schedules/{schedule}/day/{weekday}', 'WeekdayController@putAction');

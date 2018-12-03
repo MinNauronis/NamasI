@@ -17,9 +17,9 @@ class CreateWeekdaysTable extends Migration
             $table->increments('id');
             $table->integer('schedule_id');
             $table->integer('weekday');
-            $table->string('mode');
-            $table->time('openTime');
-            $table->time('closeTime');
+            $table->string('mode')->default('time');
+            $table->time('openTime')->nullable();
+            $table->time('closeTime')->nullable();
             $table->timestamps();
         });
     }

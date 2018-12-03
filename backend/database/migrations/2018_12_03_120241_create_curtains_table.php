@@ -17,11 +17,9 @@ class CreateCurtainsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->string('title');
-            $table->string('microControllerIp');
-            $table->boolean('isClose');
-            $table->boolean('isTurnOn');
-            //user
-            //schedules
+            $table->string('microControllerIp')->nullable();
+            $table->boolean('isClose')->default(false);
+            $table->boolean('isTurnOn')->default(false);
             $table->timestamps();
         });
     }

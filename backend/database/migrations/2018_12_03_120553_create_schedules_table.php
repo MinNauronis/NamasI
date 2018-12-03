@@ -17,7 +17,7 @@ class CreateSchedulesTable extends Migration
             $table->increments('id');
             $table->integer('curtain_id');
             $table->string('title');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

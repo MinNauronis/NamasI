@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Weekday extends Model
 {
+    protected $fillable = [
+      'weekday',
+      'mode',
+      'openTime',
+      'closeTime'
+    ];
+
     /**
      * Weekday's schedule
      */
