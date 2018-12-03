@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Mindaugas
- * Date: 2018-12-03
- * Time: 22:20
- */
 
 namespace App\Http\Controllers;
 
-
+Use Validator;
 use App\Schedule;
 use App\Weekday;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class WeekdayController
 {
@@ -26,6 +21,11 @@ class WeekdayController
 
     public function getAction(Request $request, Schedule $schedule, Weekday $weekday)
     {
+        if($weekday->schedule_id !== $schedule->id)
+        {
+            return new JsonResponse(['day' => null], JsonResponse::HTTP_NOT_FOUND);
+        }
+
         return new JsonResponse(['day' => $weekday], JsonResponse::HTTP_OK);
     }
 
@@ -34,14 +34,35 @@ class WeekdayController
         $oldDay = clone $weekday;
 
         if ($request->input('mode'))
-            $weekday->title = $request->input('mode');
+            $weekday->mode = $request->input('mode');
         if ($request->input('openTime'))
             $weekday->openTime = $request->input('openTime');
         if ($request->input('closeTime'))
             $weekday->closeTime = $request->input('closeTime');
+        $weekday->save();
 
         return new JsonResponse(
             ['day' => $weekday, 'oldDay' => $oldDay],
             JsonResponse::HTTP_OK);
+    }
+
+    /**
+     * @param Request $request
+     * @param bool $hasCreate
+     * @return JsonResponse|null
+     */
+    private function validateWeekday(Request $request, bool $hasCreate = true)
+    {
+        $validator = Validator::make($request->all(), [
+            'mode' =>       Rule::in(['sun', 'time']),
+            'openTime' =>   'bail|nullable|date_format:"H:i:s"',
+            'closeTime' =>  'bail|nullable|date_format:"H:i:s"',
+        ]);
+
+        if ($validator->fails()) {
+            return new JsonResponse([], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        return null;
     }
 }

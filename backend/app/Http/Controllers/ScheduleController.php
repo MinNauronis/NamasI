@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use App\Curtain;
 use App\Schedule;
 use App\Weekday;
@@ -19,18 +20,59 @@ class ScheduleController extends Controller
 
     public function getAction(Request $request, Curtain $curtain, Schedule $schedule)
     {
+        if($schedule->curtain_id !== $curtain->id)
+        {
+            return new JsonResponse(['schedule' => null], JsonResponse::HTTP_NOT_FOUND);
+        }
+
         return new JsonResponse(['schedule' => $schedule], JsonResponse::HTTP_OK);
     }
 
     public function postAction(Request $request, Curtain $curtain)
     {
+        $badResponse = $this->validateSchedule($request, true);
+        if (isset($badResponse)) {
+            return $badResponse;
+        }
+
         $schedule = $this->createSchedule($curtain, $request);
 
         return new JsonResponse(['schedule' => $schedule], JsonResponse::HTTP_CREATED);
     }
 
+    /**
+     * @param Request $request
+     * @param bool $hasCreate
+     * @return JsonResponse|null
+     */
+    private function validateSchedule(Request $request, bool $hasCreate = true)
+    {
+        if ($hasCreate) {
+            $validator = Validator::make($request->all(), [
+                'title' => 'bail|required|string|max:190',
+                'image' => 'bail|nullable|mimes:jpeg,bmp,png',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'title' => 'bail|string|max:190',
+                'image' => 'bail|nullable|mimes:jpeg,bmp,png',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return new JsonResponse([], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        return null;
+    }
+
     public function putAction(Request $request, Curtain $curtain, Schedule $schedule)
     {
+        $badResponse = $this->validateSchedule($request, false);
+        if (isset($badResponse)) {
+            return $badResponse;
+        }
+
         $oldSchedule = clone $schedule;
 
         $schedule = $this->updateSchedule($schedule, $request);
@@ -42,6 +84,11 @@ class ScheduleController extends Controller
 
     public function patchAction(Request $request, Curtain $curtain, Schedule $schedule)
     {
+        $badResponse = $this->validateSchedule($request, false);
+        if (isset($badResponse)) {
+            return $badResponse;
+        }
+
         $oldSchedule = clone $schedule;
 
         $schedule = $this->updateSchedule($schedule, $request);
@@ -56,7 +103,7 @@ class ScheduleController extends Controller
         $oldSchedule = clone $schedule;
         $days = $schedule->getWeekdays();
 
-        foreach ($days as $day){
+        foreach ($days as $day) {
             $day->delete();
         }
 
@@ -65,10 +112,11 @@ class ScheduleController extends Controller
             JsonResponse::HTTP_OK);
     }
 
-    private function createSchedule(Curtain $curtain, Request $request)
+    private function createSchedule(Curtain $curtain, Request $request): Schedule
     {
         $schedule = new Schedule();
 
+        $schedule->curtain_id = $curtain->id;
         $schedule->title = $request->input('title');
         if ($request->input('image'))
             $schedule->image = $request->input('image');
@@ -80,9 +128,11 @@ class ScheduleController extends Controller
             $day->weekday = $i;
             $day->save();
         }
+
+        return $schedule;
     }
 
-    private function updateSchedule(Schedule $schedule, Request $request)
+    private function updateSchedule(Schedule $schedule, Request $request): Schedule
     {
         if ($request->input('title'))
             $schedule->title = $request->input('title');
@@ -91,5 +141,6 @@ class ScheduleController extends Controller
 
         $schedule->save();
 
+        return $schedule;
     }
 }

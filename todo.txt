@@ -1,0 +1,4 @@
+backend
+-schedule fix image. (upload)
+-JsonResponse. hide create_at, update_at and etc.
+-fix 404 and 405 errors

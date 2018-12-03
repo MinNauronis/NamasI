@@ -36,6 +36,6 @@ Route::patch('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@pat
 Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@deleteAction');
 
 //Days routes
-Route::get('/schedules/{schedule}/day', 'WeekdayController@getAllAction');
-Route::get('/schedules/{schedule}/day/{weekday}', 'WeekdayController@getAction');
-Route::put('/schedules/{schedule}/day/{weekday}', 'WeekdayController@putAction');
+Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction');
+Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction');
+Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction');
