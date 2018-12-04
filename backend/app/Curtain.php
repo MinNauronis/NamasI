@@ -34,4 +34,12 @@ class Curtain extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Curtain's selected schedule
+     */
+    public function getSelectedSchedule()
+    {
+        return $this->hasOne('App\Schedule', 'selectSchedule_id');
+    }
 }

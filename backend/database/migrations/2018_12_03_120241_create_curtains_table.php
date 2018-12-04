@@ -20,6 +20,8 @@ class CreateCurtainsTable extends Migration
             $table->string('microControllerIp')->nullable();
             $table->boolean('isClose')->default(false);
             $table->boolean('isTurnOn')->default(false);
+            $table->string('mode')->default('auto');
+            $table->integer('selectSchedule_id')->nullable()->default(null);
             $table->timestamps();
         });
     }

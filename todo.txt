@@ -1,4 +1,5 @@
 backend
 -schedule fix image. (upload)
+-schedule turėtų turėti "isSelectable" parametrą. Leidžią pasirinkti tik tada, kai visos dienos nustatytis teisingai.
 -JsonResponse. hide create_at, update_at and etc.
 -fix 404 and 405 errors

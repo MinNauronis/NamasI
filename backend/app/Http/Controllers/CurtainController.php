@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Schedule;
+use Illuminate\Validation\Rule;
 use Validator;
 use App\Curtain;
 use App\Service\DemoService;
@@ -46,7 +48,7 @@ class CurtainController extends Controller
         //TODO user....
         //$curtain->user_id = $request->user()->id;
         $curtain->user_id = 1;
-        $curtain = $this->setCurtain($curtain, $request);
+        $curtain = $this->setCurtain($curtain, $request, true);
         $curtain->save();
 
         return new JsonResponse(['curtain' => $curtain], JsonResponse::HTTP_CREATED);
@@ -65,6 +67,8 @@ class CurtainController extends Controller
                 'microControllerIp' => 'bail|nullable|regex:[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
+                'mode' => Rule::in(['off', 'auto', 'manual']),
+                'selectSchedule_id' => 'bail|nullable|numeric',
             ]);
         } else {
             $validator = Validator::make($request->all(), [
@@ -72,17 +76,19 @@ class CurtainController extends Controller
                 'microControllerIp' => 'bail|nullable|regex:[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
+                'mode' => Rule::in(['off', 'auto', 'manual']),
+                'selectSchedule_id' => 'bail|nullable|numeric',
             ]);
         }
 
         if ($validator->fails()) {
-            return new JsonResponse([], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(['errors' => $validator->errors()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return null;
     }
 
-    private function setCurtain(Curtain $curtain, Request $request): Curtain
+    private function setCurtain(Curtain $curtain, Request $request, bool $hasCreate = true): Curtain
     {
         if ($request->input('title'))
             $curtain->title = $request->input('title');
@@ -92,6 +98,16 @@ class CurtainController extends Controller
             $curtain->isClose = $request->input('isClose');
         if ($request->input('isTurnOn'))
             $curtain->isTurnOn = $request->input('isTurnOn');
+        if ($request->input('mode'))
+            $curtain->mode = $request->input('mode');
+        $scheduleId = $request->input('selectSchedule_id');
+        //should be always false on creation
+        if (!$hasCreate && is_numeric($scheduleId)) {
+            if (Schedule::find($scheduleId)) {
+                $curtain->selectSchedule_id = $request->input('selectSchedule_id');
+            }
+        }
+
 
         return $curtain;
     }
@@ -104,7 +120,7 @@ class CurtainController extends Controller
         }
 
         $oldCurtain = clone $curtain;
-        $curtain = $this->setCurtain($curtain, $request);
+        $curtain = $this->setCurtain($curtain, $request, false);
         $curtain->save();
 
         return new JsonResponse(
@@ -120,7 +136,7 @@ class CurtainController extends Controller
         }
 
         $oldCurtain = clone $curtain;
-        $curtain = $this->setCurtain($curtain, $request);
+        $curtain = $this->setCurtain($curtain, $request, false);
         $curtain->save();
 
         return new JsonResponse(

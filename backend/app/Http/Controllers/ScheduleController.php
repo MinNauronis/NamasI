@@ -60,7 +60,7 @@ class ScheduleController extends Controller
         }
 
         if ($validator->fails()) {
-            return new JsonResponse([], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse(['errors' => $validator->errors()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return null;
