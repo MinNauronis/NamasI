@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
+//Security routes
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 
 //Curtain routes
@@ -39,3 +40,4 @@ Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@de
 Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction');
 Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction');
 Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction');
+
