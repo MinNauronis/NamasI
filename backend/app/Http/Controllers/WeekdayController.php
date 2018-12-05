@@ -14,7 +14,7 @@ class WeekdayController
     public function getAllAction(Request $request, Schedule $schedule)
     {
         $scheduleId = $schedule->id;
-        $days = Weekday::all()->where('schedule_id', $scheduleId);
+        $days = Weekday::where('schedule_id', '=', $scheduleId)->get();
 
         return new JsonResponse(['days' => $days], JsonResponse::HTTP_OK);
     }

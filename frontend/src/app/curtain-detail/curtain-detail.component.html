@@ -1,0 +1,8 @@
+<p *ngIf="curtain">
+  {{curtain.id}}
+  {{curtain.title}}
+  {{curtain.mode}}
+  {{curtain.isClose}}
+  <app-schedules [curtainId]="curtain.id"></app-schedules>
+</p>
+

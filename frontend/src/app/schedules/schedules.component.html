@@ -1,0 +1,17 @@
+<div *ngFor="let schedule of schedules">
+    <div class="row element"
+         [class.selected]="schedule === selectedSchedule"
+         (click)="onClick(schedule)">
+        <div class="col-1 photo-container">
+            <i class="fas fa-images"></i>
+        </div>
+        <div class="col my-auto text">{{schedule.title}}</div>
+        <i class="material-icons my-auto delete-button">
+            delete_forever
+        </i>
+
+    </div>
+    <app-schedule-detail *ngIf="selectedSchedule === schedule"
+                         class="row element schedule-container"
+                         [schedule]=schedule></app-schedule-detail>
+</div>

@@ -12,13 +12,6 @@ use Illuminate\Http\Request;
 
 class CurtainController extends Controller
 {
-    private $curtainService;
-
-    public function __construct(DemoService $curtainService)
-    {
-        $this->curtainService = $curtainService;
-    }
-
     public function getAllAction(Request $request)
     {
         //TODO only for user

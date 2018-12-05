@@ -1,0 +1,12 @@
+div.container{
+    padding-bottom: 10px;
+}
+
+div.row {
+    margin-top: 7px;
+}
+
+.tooltipText {
+    font-family: Roboto;
+    font-size: 20%;
+}

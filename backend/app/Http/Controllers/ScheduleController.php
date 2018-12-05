@@ -14,7 +14,7 @@ class ScheduleController extends Controller
     public function getAllAction(Request $request, Curtain $curtain)
     {
         $curtainId = $curtain->id;
-        $schedules = Schedule::all()->where('curtain_id', $curtainId);
+        $schedules = Schedule::where('curtain_id', '=', $curtainId)->get();
         return new JsonResponse(['schedules' => $schedules], JsonResponse::HTTP_OK);
     }
 

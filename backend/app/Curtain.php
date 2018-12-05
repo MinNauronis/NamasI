@@ -13,6 +13,14 @@ class Curtain extends Model
         'isTurnOn'
     ];
 
+    protected $visible = [
+        'id',
+        'title',
+        'microControllerIp',
+        'mode',
+        'selectedSchedule_id'
+    ];
+
     /*protected $hidden = [
         'user_id',
         'created_at',

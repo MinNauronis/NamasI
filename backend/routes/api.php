@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
+//Security routes
+Route::post('/registration', 'SecurityController@createUser');
+Route::post('/disconnection', 'SecurityController@logout')->middleware('auth:api');
 
 //Curtain routes
 Route::get('/curtains', 'CurtainController@getAllAction');
@@ -39,3 +42,7 @@ Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@de
 Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction');
 Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction');
 Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction');
+
+Route::fallback(function(){
+    return response()->json(['errors' => 'url not found'], 404);
+})->name('api.fallback.404');
