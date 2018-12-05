@@ -1,5 +1,22 @@
 <div *ngIf="days">
-  <li *ngFor="let day of days">
-    {{day.weekday}}
-  </li>
+    <div *ngFor="let day of days">
+        {{this.getDayTitle(day.weekday)}}
+        <mat-form-field class="">
+            <input matInput type="time" placeholder="Atidarymo laikas" [(ngModel)]="day.openTime">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="time" placeholder="Uždarymo laikas" [(ngModel)]="day.closeTime">
+        </mat-form-field>
+
+        <div class="" (click)=onChangeMode(day)
+             matTooltip={{modeInfo}}
+             [matTooltipShowDelay]="2000">
+            <span *ngIf="day.mode === 'time'; else sunMoon">
+                <i class="far fa-clock"></i>
+            </span>
+            <ng-template #sunMoon>
+                <i class="fas fa-sun"></i>
+            </ng-template>
+        </div>
+    </div>
 </div>
