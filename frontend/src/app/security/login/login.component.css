@@ -1,25 +1,27 @@
 .form {
-    min-width: 150px;
-    max-width: 300px;
-    width: 95%;
+  min-width: 150px;
+  max-width: 300px;
+  width: 95%;
 }
 
 .form-field {
-    width: 100%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  width: 100%;
 }
 
 h1, h6 {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 h6 {
-    margin-top: 5px;
-    color: #ab0000;
+  margin-top: 5px;
+  color: #ab0000;
 }
 
 button {
-    height: 50px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 150%;
+  height: 50px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 150%;
 }

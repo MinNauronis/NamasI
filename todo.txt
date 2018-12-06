@@ -4,3 +4,4 @@ backend
 -JsonResponse. hide create_at, update_at and etc.
 -make visable for admin
 -fix 404 and 405 errors
+-reikaulauti JSON formato (nes nes teksto formatas neveikia)
