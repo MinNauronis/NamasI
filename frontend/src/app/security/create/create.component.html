@@ -2,12 +2,12 @@
 <form class="form mx-auto" (ngSubmit)="onSubmit()">
     <mat-form-field class="form-field mx-auto" appearance="outline">
         <mat-label>Naudotojo vardas</mat-label>
-        <input matInput placeholder="Placeholder" [formControl]="form.controls['name']">
+        <input matInput placeholder="Jūsų vardas" [formControl]="form.controls['name']">
     </mat-form-field>
 
     <mat-form-field class="form-field mx-auto" appearance="outline">
         <mat-label>El. paštas</mat-label>
-        <input matInput placeholder="Placeholder" [formControl]="emailFormControl"
+        <input matInput placeholder="Jūsų el. paštas" [formControl]="emailFormControl"
                [errorStateMatcher]="matcher">
         <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
             Prašome įvesti teisingą el. paštą
@@ -19,7 +19,7 @@
 
     <mat-form-field class="form-field mx-auto" appearance="outline">
         <mat-label>Slaptažodis</mat-label>
-        <input matInput placeholder="Placeholder" [formControl]="form.controls['password']"
+        <input matInput placeholder="Jūsų slaptažodis" [formControl]="form.controls['password']"
                [type]="hidePassword ? 'password' : 'text'">
         <mat-icon matSuffix (click)="hidePassword = !hidePassword">
             {{hidePassword ? 'visibility_off' : 'visibility_on'}}
@@ -32,5 +32,5 @@
     >
         Registruotis
     </button>
-    <h5 class="notice" *ngIf="isResponseError">El. paštas užimtas</h5>
+    <h5 class="notice" *ngIf="isResponseError">Deja, el. paštas jau užimtas</h5>
 </form>
