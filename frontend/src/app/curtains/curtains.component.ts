@@ -14,6 +14,7 @@ export class CurtainsComponent implements OnInit {
   constructor(private _curtainService: CurtainService) { }
 
   ngOnInit() {
+    console.log(localStorage.getItem('accessToken'));
     this.getCurtains();
   }
 

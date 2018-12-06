@@ -6,6 +6,8 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 import {CurtainsComponent} from "./curtains/curtains.component";
 import {SchedulesComponent} from "./schedules/schedules.component";
 import {CurtainDetailComponent} from "./curtain-detail/curtain-detail.component";
+import {CreateComponent} from "./security/create/create.component";
+import {LoginComponent} from "./security/login/login.component";
 
 const routes: Routes = [
     {path: '', redirectTo: '/curtains', pathMatch: 'full'},
@@ -14,7 +16,9 @@ const routes: Routes = [
     {path: 'hero/:id', component: HeroDetailComponent},
     {path: 'curtains', component: CurtainsComponent},
     {path: 'curtains/:id', component: CurtainDetailComponent},
-    {path: 'schedules/:id', component: SchedulesComponent}
+    {path: 'schedules/:id', component: SchedulesComponent},
+    {path: 'registration', component: CreateComponent},
+    {path: 'login', component: LoginComponent}
 ]
 
 @NgModule({

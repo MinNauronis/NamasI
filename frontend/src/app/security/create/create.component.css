@@ -1,0 +1,25 @@
+.form {
+    min-width: 150px;
+    max-width: 300px;
+    width: 95%;
+}
+
+.form-field {
+    width: 100%;
+}
+
+h1, h5 {
+    display: flex;
+    justify-content: center;
+}
+
+h5 {
+    margin-top: 5px;
+    color: #ab0000;
+}
+
+button {
+    height: 50px;
+   font-family: 'Roboto', sans-serif;
+    font-size: 150%;
+}

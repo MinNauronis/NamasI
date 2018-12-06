@@ -6,7 +6,10 @@ import {Curtain} from "../objects/curtain";
 import {catchError, map, tap} from "rxjs/operators";
 
 const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json'
+    })
 };
 
 @Injectable({
@@ -16,7 +19,7 @@ const httpOptions = {
 export class CurtainService {
 
     //should be global
-    private _serveUrl = 'http://localhost:8000/';
+    private _serverUrl = 'http://localhost:8000/';
     private _curtainsUrl = 'api/curtains/';
 
     constructor(private _http: HttpClient, private _messageService: MessageService) {
@@ -37,7 +40,7 @@ export class CurtainService {
     }
 
     private getUrl(id: number = undefined): string {
-        let url = this._serveUrl+this._curtainsUrl;
+        let url = this._serverUrl + this._curtainsUrl;
 
         if (id != null) {
             url = `${url}${id}`;
@@ -97,7 +100,7 @@ export class CurtainService {
         this.log('update curtain');
 
         return this._http.put<Curtain>(this.getUrl(curtain.id), curtain, httpOptions).pipe(
-          tap((curtain : Curtain) => this.log(`updated curtain id=${curtain.id}`)),
+            tap((curtain: Curtain) => this.log(`updated curtain id=${curtain.id}`)),
             catchError(this.handleError<Curtain>('updatedCurtain'))
         );
     }
@@ -106,7 +109,7 @@ export class CurtainService {
         const id = typeof curtain === 'number' ? curtain : curtain.id;
 
         return this._http.delete<Curtain>(this.getUrl(id)).pipe(
-            tap( _ => this.log(`deleted curtain id${id}`)),
+            tap(_ => this.log(`deleted curtain id${id}`)),
             catchError(this.handleError<Curtain>('deleteCurtain'))
         )
     }

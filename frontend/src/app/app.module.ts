@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppComponent} from './app.component';
 import {HeroesComponent} from './heroes/heroes.component';
 import {HeroDetailComponent} from './hero-detail/hero-detail.component';
@@ -18,6 +18,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { AppMaterialModule } from './app-material.module';
 import { CurtainDetailComponent } from './curtain-detail/curtain-detail.component';
 import { DaysComponent } from './days/days.component';
+import { LoginComponent } from './security/login/login.component';
+import { CreateComponent } from './security/create/create.component';
 
 @NgModule({
     declarations: [
@@ -32,11 +34,14 @@ import { DaysComponent } from './days/days.component';
         ScheduleDetailComponent,
         SchedulesComponent,
         CurtainDetailComponent,
-        DaysComponent
+        DaysComponent,
+        LoginComponent,
+        CreateComponent,
     ],
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         AppRoutingModule,
         HttpClientModule,
         BrowserAnimationsModule,

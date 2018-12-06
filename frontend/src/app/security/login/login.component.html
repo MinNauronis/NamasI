@@ -1,0 +1,32 @@
+<h1>Prisijungimas</h1>
+
+<form class="form mx-auto" (ngSubmit)="onSubmit()">
+    <mat-form-field class="form-field mx-auto" appearance="outline">
+        <mat-label>El. paštas</mat-label>
+        <input matInput placeholder="Placeholder" [formControl]="emailFormControl"
+               [errorStateMatcher]="matcher">
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+            Prašome įvesti teisingą el. paštą
+        </mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+            El. paštas yra <strong>būtinas</strong>
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-field mx-auto" appearance="outline">
+        <mat-label>Slaptažodis</mat-label>
+        <input matInput placeholder="Placeholder" [formControl]="passwordForm"
+               [type]="hidePassword ? 'password' : 'text'">
+        <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+            {{hidePassword ? 'visibility_off' : 'visibility_on'}}
+        </mat-icon>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit"
+            class="btn-primary form-field"
+            [disabled]="!passwordForm.valid || !emailFormControl.valid || isSubmitted"
+    >
+        Prisijungti
+    </button>
+    <h6 class="notice" *ngIf="isResponseError">Neteisingas el. paštas arba slaptažodis</h6>
+</form>

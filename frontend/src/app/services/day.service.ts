@@ -5,7 +5,10 @@ import {Observable, of} from 'rxjs';
 import {map, tap, catchError} from 'rxjs/operators';
 
 const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json'
+    })
 };
 
 @Injectable({
@@ -14,7 +17,7 @@ const httpOptions = {
 export class DayService {
 
     //should be global. / is very important
-    private _serveUrl = 'http://localhost:8000/';
+    private _serverUrl = 'http://localhost:8000/';
     private _daysUrl = 'api/schedules/_slug_/days/';
 
     constructor(private _http: HttpClient) {
@@ -36,7 +39,7 @@ export class DayService {
     private getUrl(slug: number, id: number = undefined): string {
         let url = '';
 
-        url = this._serveUrl + this._daysUrl;
+        url = this._serverUrl + this._daysUrl;
         url = url.replace('_slug_', String(slug));
         if (!id == null) {
             url = url + id;

@@ -5,7 +5,10 @@ import {Schedule} from "../objects/schedule";
 import {catchError, map, tap} from "rxjs/operators";
 
 const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept' : 'application/json'
+    })
 };
 
 @Injectable({
@@ -14,7 +17,7 @@ const httpOptions = {
 export class ScheduleService {
 
     //should be global. / is very important
-    private _serveUrl = 'http://localhost:8000/';
+    private _serverUrl = 'http://localhost:8000/';
     private _schedulesUrl = 'api/curtains/_slug_/schedules/';
 
     constructor(private _http: HttpClient) {
@@ -36,7 +39,7 @@ export class ScheduleService {
     private getUrl(slug: number, id: number = undefined): string {
         let url = '';
 
-        url = this._serveUrl + this._schedulesUrl;
+        url = this._serverUrl + this._schedulesUrl;
         url = url.replace('_slug_', String(slug));
         if (!id == null) {
             url = url + id;

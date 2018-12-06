@@ -44,5 +44,5 @@ Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction'
 Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction');
 
 Route::fallback(function(){
-    return response()->json(['errors' => 'url not found'], 404);
+    return response()->json(['error' => 'url not found'], 404);
 })->name('api.fallback.404');
