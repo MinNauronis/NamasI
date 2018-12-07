@@ -1,22 +1,42 @@
-<div *ngIf="days">
-    <div *ngFor="let day of days">
+<div class="row">
+    <h5 class="col-10 title">
         {{this.getDayTitle(day.weekday)}}
-        <mat-form-field class="">
-            <input matInput type="time" placeholder="Atidarymo laikas" [(ngModel)]="day.openTime">
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="time" placeholder="Uždarymo laikas" [(ngModel)]="day.closeTime">
-        </mat-form-field>
+    </h5>
 
-        <div class="" (click)=onChangeMode(day)
-             matTooltip={{modeInfo}}
-             [matTooltipShowDelay]="2000">
-            <span *ngIf="day.mode === 'time'; else sunMoon">
-                <i class="far fa-clock"></i>
-            </span>
-            <ng-template #sunMoon>
-                <i class="fas fa-sun"></i>
-            </ng-template>
-        </div>
+    <div class="col-2 mode" (click)="onChangeMode(day); onTouch()"
+         matTooltip={{modeInfo}}
+         [matTooltipShowDelay]="2000">
+    <span *ngIf="day.mode === 'time'">
+        <i class="far fa-clock fa-lg"></i>
+    </span>
+        <span *ngIf="day.mode === 'sun'">
+            <i class="fas fa-sun fa-lg"></i>
+        </span>
+        <span *ngIf="day.mode === 'skip'">
+            <i class="fas fa-ban fa-lg"></i>
+        </span>
     </div>
+
+    <mat-form-field class="col-md-6 timeField">
+        <input matInput type="time" (click)="onTouch()"
+               [disabled]="isTimeDisable()"
+               placeholder="Atidarymo laikas" [(ngModel)]="day.openTime">
+    </mat-form-field>
+
+    <mat-form-field class="col-md-6">
+        <input matInput type="time" (click)="onTouch()"
+               [disabled]="isTimeDisable()"
+               placeholder="Uždarymo laikas" [(ngModel)]="day.closeTime">
+    </mat-form-field>
+</div>
+
+<div class="lds-roller" *ngIf="false">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
 </div>

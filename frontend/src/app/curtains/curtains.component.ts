@@ -22,6 +22,4 @@ export class CurtainsComponent implements OnInit {
     this._curtainService.getCurtains().
         subscribe(curtains => this.curtains = curtains);
   }
-
-
 }

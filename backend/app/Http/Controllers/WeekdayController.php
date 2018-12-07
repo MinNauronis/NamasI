@@ -54,7 +54,7 @@ class WeekdayController
     private function validateWeekday(Request $request, bool $hasCreate = true)
     {
         $validator = Validator::make($request->all(), [
-            'mode' =>       Rule::in(['sun', 'time']),
+            'mode' =>       Rule::in(['sun', 'time', 'skip']),
             'openTime' =>   'bail|nullable|date_format:"H:i:s"',
             'closeTime' =>  'bail|nullable|date_format:"H:i:s"',
         ]);

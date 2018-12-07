@@ -41,7 +41,7 @@ export class DayService {
 
         url = this._serverUrl + this._daysUrl;
         url = url.replace('_slug_', String(slug));
-        if (!id == null) {
+        if (id != null) {
             url = url + id;
         }
 
@@ -86,30 +86,12 @@ export class DayService {
         );
     }
 
-    public addDay(scheduleId: number, day: Day): Observable<Day> {
-        this.log('post day');
-
-        return this._http.post<Day>(this.getUrl(scheduleId), day, httpOptions).pipe(
-            tap((day: Day) => this.log(`added day with name = ${day.weekday}`)),
-            catchError(this.handleError<Day>('addDay'))
-        );
-    }
-
     public updateDay(scheduleId: number, day: Day): Observable<Day> {
         this.log('update day');
 
         return this._http.put<Day>(this.getUrl(scheduleId, day.id), day, httpOptions).pipe(
-            tap((day: Day) => this.log(`updated day id=${day.id}`)),
+            tap((day: Day) => this.log(`updated day id=${day}`)),
             catchError(this.handleError<Day>('updatedDay'))
         );
-    }
-
-    public deleteDay(scheduleId: number, day: Day | number): Observable<Day> {
-        const id = typeof day === 'number' ? day : day.id;
-
-        return this._http.delete<Day>(this.getUrl(scheduleId, id)).pipe(
-            tap(_ => this.log(`deleted day id${id}`)),
-            catchError(this.handleError<Day>('deleteDay'))
-        )
     }
 }

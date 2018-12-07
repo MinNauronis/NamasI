@@ -1,12 +1,26 @@
-div.container{
-    padding-bottom: 10px;
+.days {
+    margin-top: 5px;
 }
 
-div.row {
+.days:nth-child(even) {
+    background: #1d643b;
+}
+
+.days:nth-child(odd) {
+    background: #4dc0b5;
+}
+
+
+div.container{
     margin-top: 7px;
+    margin-bottom: 10px;
 }
 
 .tooltipText {
-    font-family: Roboto;
+    font-family: 'Roboto';
     font-size: 20%;
+}
+
+.saving-pen {
+    color: greenyellow;
 }

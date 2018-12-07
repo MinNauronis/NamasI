@@ -15,9 +15,9 @@ const routes: Routes = [
     {path: 'heroes', component: HeroesComponent, canActivate: [LoginGuard]},
     {path: 'dashboard', component: DashboardComponent, canActivate: [LoginGuard]},
     {path: 'hero/:id', component: HeroDetailComponent, canActivate: [LoginGuard]},
-    {path: 'curtains', component: CurtainsComponent, canActivate: [LoginGuard]},
-    {path: 'curtains/:id', component: CurtainDetailComponent, canActivate: [LoginGuard]},
-    {path: 'schedules/:id', component: SchedulesComponent, canActivate: [LoginGuard]},
+    {path: 'curtains', component: CurtainsComponent,/* canActivate: [LoginGuard]*/},
+    {path: 'curtains/:id', component: CurtainDetailComponent, /*canActivate: [LoginGuard]*/},
+    {path: 'schedules/:id', component: SchedulesComponent,/*canActivate: [LoginGuard]*/},
     {path: 'registration', component: CreateComponent},
     {path: 'login', component: LoginComponent}
 ]

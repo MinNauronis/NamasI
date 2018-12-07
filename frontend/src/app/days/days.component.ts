@@ -1,20 +1,24 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {DayService} from "../services/day.service";
 import {Day} from "../objects/day";
 import {Location} from "@angular/common";
+import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
 
 @Component({
     selector: 'app-days',
     templateUrl: './days.component.html',
     styleUrls: ['./days.component.css']
 })
-export class DaysComponent implements OnInit {
+export class DaysComponent implements OnInit, OnDestroy {
 
     @Input() scheduleId: number;
+    @Input() day: Day;
 
-    public days: Day[];
-    public weekdaysName = [
+    form: FormGroup;
+    isUpdating = false;
+    isTouched = false;
+    weekdaysName = [
         'Pirmadienis',
         'Antradienis',
         'Trečiadienis',
@@ -22,25 +26,25 @@ export class DaysComponent implements OnInit {
         'Penktadienis',
         'Šeštadienis',
         'Sekmadienis'
-        ];
-    public modeInfo : string = 'Laikas nuostatomas pagal paros (laikrodžio) arba saulės laidos/tekmės laiką. ' +
+    ];
+    modeInfo: string = 'Laikas nuostatomas pagal paros (laikrodžio) arba saulės laidos/tekmės laiką. ' +
         'Saulė teka 8h. Nustačius +5min, užuolaidos bus atitraukos 8:05';
 
     constructor(
         private _route: ActivatedRoute,
         private _dayService: DayService,
-        private _location: Location
+        private _location: Location,
     ) {
     }
 
     ngOnInit() {
-        this.getDays();
     }
 
-    private getDays() {
-        this._dayService.getDays(this.scheduleId).subscribe(
-            fetchedDays => this.days = fetchedDays
-        )
+    ngOnDestroy(): void {
+        this.onSubmit();
+    }
+
+    public update(day: Day) {
     }
 
     /**
@@ -61,10 +65,49 @@ export class DaysComponent implements OnInit {
 
     public onChangeMode(day: Day): void {
         let currentMode = day.mode;
-        if (currentMode === 'sun') {
-            day.mode = 'time';
-        } else {
-            day.mode = 'sun';
+        switch (currentMode) {
+            case 'sun': {
+                day.mode = 'time';
+                break;
+            }
+            case 'time': {
+                day.mode = 'skip';
+                break;
+            }
+            case 'skip': {
+                day.mode = 'sun';
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
+
+    public onSubmit(): void {
+        if (this.isTouched) {
+            this._dayService.updateDay(this.scheduleId, this.day).subscribe(
+                response => console.log(response)
+            )
+        }
+    }
+
+    public onReset(dayProperty: string) {
+        if (this.day[dayProperty]) {
+            this.day[dayProperty] = null;
+        }
+    }
+
+    public onTouch():void {
+        this.isTouched = true;
+    }
+
+    public isTimeDisable(): boolean{
+        if (this.day.mode === 'skip') {
+            return true;
+        }
+
+        return false;
+    }
+
 }

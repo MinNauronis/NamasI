@@ -1,3 +1,5 @@
-<div class="container">
-    <app-days scheduleId="{{schedule.id}}"></app-days>
+<div *ngIf="days">
+    <div *ngFor="let day of days" class="container days">
+        <app-days [scheduleId]="schedule.id" [day]="day"></app-days>
+    </div>
 </div>
