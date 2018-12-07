@@ -1,8 +1,41 @@
-<p *ngIf="curtain">
-  {{curtain.id}}
-  {{curtain.title}}
-  {{curtain.mode}}
-  {{curtain.isClose}}
-  <app-schedules [curtainId]="curtain.id"></app-schedules>
-</p>
+<div *ngIf="curtain">
+    <div class="curtain">
+        <h1>
+            {{curtain.title}}
+        </h1>
+
+
+        <div (click)="onChangeOpenClose()">
+            <ng-container *ngIf="curtain.isClose; else open">
+                <i class="far fa-moon"></i>
+            </ng-container>
+            <ng-template #open>
+                <i class="fas fa-sun"></i>
+            </ng-template>
+        </div>
+
+        <div (click)="onChangeMode()">
+            <ng-container *ngIf="curtain.mode === 'auto'; else manualMode">
+                <i class="material-icons">
+                    autorenew
+                </i>
+            </ng-container>
+            <ng-template #manualMode>
+                <ng-container *ngIf="curtain.mode === 'manual'; else offMode">
+                    <i class="fas fa-screwdriver"></i>
+                </ng-container>
+            </ng-template>
+            <ng-template #offMode>
+                <i class="fas fa-power-off"></i>
+            </ng-template>
+        </div>
+        {{curtain.selectSchedule_id}}
+        {{curtain.microControllerIp}}
+    </div>
+    <app-schedules
+            [curtainId]="curtain.id"
+            [receivedDefaultId]="curtain.selectSchedule_id"
+            (sendDefaultId)="defaultChangeHandler($event)"
+    ></app-schedules>
+</div>
 

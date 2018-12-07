@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {ScheduleService} from "../services/schedule.service";
 import {Schedule} from "../objects/schedule";
 
@@ -9,12 +9,15 @@ import {Schedule} from "../objects/schedule";
 })
 
 export class SchedulesComponent implements OnInit {
-
-    @Input() curtainId: number;
     /**
-     * @var defaultId -> curtain.selectedScheduleId
+     * @var receivedDefaultId -> curtain.selectedScheduleId
+     * @var sendDefaultId -> curtain.selectedScheduleId
      */
-    public defaultId = null;
+    @Input() curtainId: number;
+    @Input() receivedDefaultId: number;
+    @Output() sendDefaultId: EventEmitter<number> = new EventEmitter();
+
+    private defaultId: number;
     public editingId = null;
 
     public schedules: Schedule[];
@@ -28,10 +31,11 @@ export class SchedulesComponent implements OnInit {
 
     ngOnInit() {
         this.getSchedules();
+        this.setInitDefaultId();
     }
 
     getSchedules(): void {
-        this._scheduleService.getSchedules(1)
+        this._scheduleService.getSchedules(this.curtainId)
             .subscribe(schedules => this.schedules = schedules);
     }
 
@@ -51,18 +55,26 @@ export class SchedulesComponent implements OnInit {
         return false;
     }
 
+    onDelete(schedule: Schedule): void {
+        console.log('want to delete');
+        this.schedules = this.schedules.filter(h => h !== schedule);
+        //this._heroService.deleteHero(hero).subscribe();
+    }
+
+    editRequired(schedule: Schedule): boolean {
+        if (schedule.id === this.editingId) {
+            return true;
+        }
+
+        return false;
+    }
+
     isScheduleDefault(schedule: Schedule): boolean {
         if (schedule.id === this.defaultId) {
             return true;
         }
 
         return;
-    }
-
-    onDelete(schedule: Schedule): void {
-        console.log('want to delete');
-        this.schedules = this.schedules.filter(h => h !== schedule);
-        //this._heroService.deleteHero(hero).subscribe();
     }
 
     /**
@@ -84,24 +96,22 @@ export class SchedulesComponent implements OnInit {
         console.log('edit status now: ' + this.editingId);
     }
 
-    editRequired(schedule: Schedule): boolean {
-        if (schedule.id === this.editingId) {
-            return true;
-        }
-
-        return false;
-    }
-
     onSetDefault(schedule: Schedule): void {
         if (schedule.id === this.defaultId) {
             this.defaultId = null;
-            //curtains.selectedScheduleId, set to null
-            console.log('default status now: ' + this.editingId);
-            return;
+        } else {
+            this.defaultId = schedule.id;
         }
-
-        this.defaultId = schedule.id;
+        this.sendDefaultId.emit(this.defaultId);
         //curtains.selectedScheduleId, set to null
-        console.log('default status now: ' + this.editingId);
+        console.log('default status now: ' + this.defaultId);
+    }
+
+    setInitDefaultId() {
+        if (this.receivedDefaultId) {
+            this.defaultId = this.receivedDefaultId;
+        } else {
+            this.defaultId = null;
+        }
     }
 }
