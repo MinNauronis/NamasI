@@ -1,0 +1,23 @@
+<div class="schedule">
+    <div class="schedule-header"
+         [class.selected]="_isCreating">
+
+        <mat-form-field class="col">
+            <input matInput type="text"
+                   (click)="onCreate()"
+                   placeholder="Pavadinimas" [(ngModel)]="schedule.title">
+        </mat-form-field>
+
+        <i class="fas fa-check my-auto fa-lg button"
+           [class.click-button]="_isButtonsOn"
+           [class.confirm-button]="_isButtonsOn"
+           (click)="onConfirm()"></i>
+        <i class="fas fa-times my-auto fa-lg button"
+           [class.click-button]="_isButtonsOn"
+           [class.denied-button]="_isButtonsOn"
+           (click)="onCancel()"></i>
+    </div>
+
+    <div class="schedule-footer"
+         [class.selected]="_isCreating"></div>
+</div>

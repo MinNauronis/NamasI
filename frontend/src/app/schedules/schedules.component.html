@@ -1,3 +1,5 @@
+<app-schedule-new (newSchedule)="createSchedule($event)"></app-schedule-new>
+
 <div class="schedule" *ngFor="let schedule of schedules">
     <div class="schedule-header"
          [class.default]="isScheduleDefault(schedule) && !isScheduleSelected(schedule)"
@@ -29,18 +31,15 @@
 
         <i class="fas fa-pencil-alt my-auto fa-lg click-button"
            [class.saving-pen]="editingId"
-           (click)="onEdit(schedule)"
-        ></i>
-
-        <i class="material-icons my-auto click-button"
-           (click)="onDelete(schedule)">
-            delete_forever
-        </i>
+           [class.editing]="isEditing(schedule)"
+           (click)="onEdit(schedule)"></i>
+        <i class="fas fa-trash-alt my-auto fa-lg click-button"
+           (click)="onDelete(schedule)"></i>
     </div>
 
     <app-schedule-detail *ngIf="selectedSchedule === schedule"
                          class="element schedule-container"
-                         [schedule]=schedule></app-schedule-detail>
+                         [schedule]="schedule"></app-schedule-detail>
 
     <div class="schedule-footer" (click)="onScheduleSelect(schedule)"
          [class.default]="isScheduleDefault(schedule) && !isScheduleSelected(schedule)"

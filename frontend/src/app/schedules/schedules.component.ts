@@ -14,10 +14,15 @@ export class SchedulesComponent implements OnInit {
      * @var sendDefaultId -> curtain.selectedScheduleId
      */
     @Input() curtainId: number;
-    @Input() receivedDefaultId: number;
+
+    @Input()
+    set defaultId(receivedDefaultId: any) {
+        this._defaultId = receivedDefaultId;
+    }
+
     @Output() sendDefaultId: EventEmitter<number> = new EventEmitter();
 
-    private defaultId: number;
+    private _defaultId: number;
     public editingId = null;
 
     public schedules: Schedule[];
@@ -31,7 +36,6 @@ export class SchedulesComponent implements OnInit {
 
     ngOnInit() {
         this.getSchedules();
-        this.setInitDefaultId();
     }
 
     getSchedules(): void {
@@ -58,7 +62,9 @@ export class SchedulesComponent implements OnInit {
     onDelete(schedule: Schedule): void {
         console.log('want to delete');
         this.schedules = this.schedules.filter(h => h !== schedule);
-        //this._heroService.deleteHero(hero).subscribe();
+        this._scheduleService.deleteSchedule(this.curtainId, schedule).subscribe(
+            message => console.log(message)
+        );
     }
 
     editRequired(schedule: Schedule): boolean {
@@ -70,7 +76,7 @@ export class SchedulesComponent implements OnInit {
     }
 
     isScheduleDefault(schedule: Schedule): boolean {
-        if (schedule.id === this.defaultId) {
+        if (schedule.id != null && schedule.id === this._defaultId) {
             return true;
         }
 
@@ -82,36 +88,55 @@ export class SchedulesComponent implements OnInit {
      * @param schedule
      */
     onEdit(schedule: Schedule): void {
-        if (this.editingId != null) {
-            //save edit by editingId
-        }
-
+        //save by schedule
         if (schedule.id === this.editingId) {
             this.editingId = null;
+            this.updateSchedule(schedule);
             console.log('edit status now: ' + this.editingId);
             return;
+        }
+
+        //save by editingId
+        if (this.editingId != null) {
+            this.updateSchedule(this.schedules[this.editingId]);
         }
 
         this.editingId = schedule.id;
         console.log('edit status now: ' + this.editingId);
     }
 
-    onSetDefault(schedule: Schedule): void {
-        if (schedule.id === this.defaultId) {
-            this.defaultId = null;
-        } else {
-            this.defaultId = schedule.id;
+    isEditing(schedule: Schedule) :boolean {
+        if (this.editingId === schedule.id) {
+            return true;
         }
-        this.sendDefaultId.emit(this.defaultId);
-        //curtains.selectedScheduleId, set to null
-        console.log('default status now: ' + this.defaultId);
+
+        return false;
     }
 
-    setInitDefaultId() {
-        if (this.receivedDefaultId) {
-            this.defaultId = this.receivedDefaultId;
+    onSetDefault(schedule: Schedule): void {
+        this.setDefaultId(schedule.id);
+        this.sendDefaultId.emit(this._defaultId);
+        //curtains.selectedScheduleId, set to null
+        console.log('default status now: ' + this._defaultId);
+    }
+
+    setDefaultId(value: number) {
+        if (value === this._defaultId) {
+            this._defaultId = null;
         } else {
-            this.defaultId = null;
+            this._defaultId = value;
         }
+    }
+
+    private updateSchedule(schedule: Schedule) {
+        this._scheduleService.updateSchedule(this.curtainId, schedule).subscribe(
+            updated => console.log(updated)
+        );
+    }
+
+    public createSchedule(schedule: Schedule) {
+        this._scheduleService.addSchedule(this.curtainId, schedule).subscribe(
+            created => this.schedules.push(created)
+        );
     }
 }

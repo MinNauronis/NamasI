@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit {
         this._securityService.loginUser(email, password).subscribe(
             isSuccess => {
                 if (isSuccess) {
-                    localStorage.setItem('aa', 'asda');
                     this._router.navigateByUrl('/');
                 } else {
                     this.isResponseError = true;

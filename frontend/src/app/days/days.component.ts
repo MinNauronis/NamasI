@@ -3,21 +3,21 @@ import {ActivatedRoute} from "@angular/router";
 import {DayService} from "../services/day.service";
 import {Day} from "../objects/day";
 import {Location} from "@angular/common";
-import {FormBuilder, FormGroup, FormControl} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {debounceTime, switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'app-days',
     templateUrl: './days.component.html',
     styleUrls: ['./days.component.css']
 })
-export class DaysComponent implements OnInit, OnDestroy {
+export class DaysComponent implements OnInit {
 
     @Input() scheduleId: number;
     @Input() day: Day;
 
-    form: FormGroup;
-    isUpdating = false;
-    isTouched = false;
+    updateDay = new Subject<any>();
     weekdaysName = [
         'Pirmadienis',
         'Antradienis',
@@ -27,8 +27,6 @@ export class DaysComponent implements OnInit, OnDestroy {
         'Šeštadienis',
         'Sekmadienis'
     ];
-    modeInfo: string = 'Laikas nuostatomas pagal paros (laikrodžio) arba saulės laidos/tekmės laiką. ' +
-        'Saulė teka 8h. Nustačius +5min, užuolaidos bus atitraukos 8:05';
 
     constructor(
         private _route: ActivatedRoute,
@@ -38,15 +36,11 @@ export class DaysComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.updateDay.pipe(
+            debounceTime(1200),
+            switchMap(_ => this._dayService.updateDay(this.scheduleId, this.day))
+        ).subscribe(response => console.log(response));
     }
-
-    ngOnDestroy(): void {
-        this.onSubmit();
-    }
-
-    public update(day: Day) {
-    }
-
     /**
      * weekday 1-7
      * @param weekday
@@ -68,14 +62,17 @@ export class DaysComponent implements OnInit, OnDestroy {
         switch (currentMode) {
             case 'sun': {
                 day.mode = 'time';
+                this.updateDay.next('time');
                 break;
             }
             case 'time': {
                 day.mode = 'skip';
+                this.updateDay.next('skip');
                 break;
             }
             case 'skip': {
                 day.mode = 'sun';
+                this.updateDay.next('sun');
                 break;
             }
             default: {
@@ -84,22 +81,8 @@ export class DaysComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSubmit(): void {
-        if (this.isTouched) {
-            this._dayService.updateDay(this.scheduleId, this.day).subscribe(
-                response => console.log(response)
-            )
-        }
-    }
-
-    public onReset(dayProperty: string) {
-        if (this.day[dayProperty]) {
-            this.day[dayProperty] = null;
-        }
-    }
-
-    public onTouch():void {
-        this.isTouched = true;
+    public onTimeChange():void {
+        this.updateDay.next('time changed');
     }
 
     public isTimeDisable(): boolean{

@@ -1,41 +1,76 @@
 <div *ngIf="curtain">
-    <div class="curtain">
-        <h1>
-            {{curtain.title}}
-        </h1>
-
-
-        <div (click)="onChangeOpenClose()">
-            <ng-container *ngIf="curtain.isClose; else open">
-                <i class="far fa-moon"></i>
+    <div class="curtain flex-container">
+        <div class="col-10">
+            <ng-container *ngIf="_hasEditTitle; else title">
+                <mat-form-field class="w-100">
+                    <input matInput type="text" placeholder="Pavadinimas" [(ngModel)]="curtain.title">
+                </mat-form-field>
             </ng-container>
-            <ng-template #open>
-                <i class="fas fa-sun"></i>
+            <ng-template #title>
+                <h1>
+                    {{curtain.title}}
+                </h1>
             </ng-template>
+
+
+            <mat-form-field class="w-100">
+                <mat-select disableOptionCentering [formControl]="form"
+                            placeholder="Numatytasis tvarkaraštis"
+                            [(value)]="curtain.selectSchedule_id">
+                    <mat-option [value]="null">-Nepasirinkta-</mat-option>
+                    <ng-container *ngFor="let schedule of schedules">
+                        <mat-option [value]="schedule.id">{{schedule.title}}</mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
         </div>
 
-        <div (click)="onChangeMode()">
-            <ng-container *ngIf="curtain.mode === 'auto'; else manualMode">
-                <i class="material-icons">
-                    autorenew
-                </i>
-            </ng-container>
-            <ng-template #manualMode>
-                <ng-container *ngIf="curtain.mode === 'manual'; else offMode">
-                    <i class="fas fa-screwdriver"></i>
+        <div class="col-1 icon-size flex-container column">
+            <div class="flex-container to-end"
+                 (click)="onChangeOpenClose()">
+                <ng-container *ngIf="curtain.isClose; else open">
+                    <i class="far fa-moon click-button"></i>
                 </ng-container>
-            </ng-template>
-            <ng-template #offMode>
-                <i class="fas fa-power-off"></i>
-            </ng-template>
-        </div>
-        {{curtain.selectSchedule_id}}
-        {{curtain.microControllerIp}}
-    </div>
-    <app-schedules
-            [curtainId]="curtain.id"
-            [receivedDefaultId]="curtain.selectSchedule_id"
-            (sendDefaultId)="defaultChangeHandler($event)"
-    ></app-schedules>
-</div>
+                <ng-template #open>
+                    <i class="fas fa-sun click-button"></i>
+                </ng-template>
+            </div>
 
+            <div class="flex-container to-end"
+                 (click)="onChangeMode()">
+                <ng-container *ngIf="curtain.mode === 'auto'; else manualMode">
+                    <i class="material-icons icon-size click-button">
+                        autorenew
+                    </i>
+                </ng-container>
+                <ng-template #manualMode>
+                    <ng-container *ngIf="curtain.mode === 'manual'; else offMode">
+                        <i class="fas fa-screwdriver click-button"></i>
+                    </ng-container>
+                </ng-template>
+                <ng-template #offMode>
+                    <i class="fas fa-power-off click-button"></i>
+                </ng-template>
+            </div>
+        </div>
+        <div class="col-1 icon-size flex-container column">
+            <div class="flex-container to-end"
+                 (click)="onDelete()">
+                <i class="fas fa-trash-alt click-button"></i>
+            </div>
+
+            <div class="flex-container to-end"
+                 [class.confirm]="_hasEditTitle"
+                 (click)="onEdit()">
+                <i class="fas fa-pencil-alt click-button"></i>
+            </div>
+        </div>
+    </div>
+    <div>
+        <app-schedules
+                [curtainId]="curtain.id"
+                [defaultId]="curtain.selectSchedule_id"
+                (sendDefaultId)="defaultChangeHandler($event)"
+        ></app-schedules>
+    </div>
+</div>

@@ -101,15 +101,20 @@ class ScheduleController extends Controller
     public function deleteAction(Request $request, Curtain $curtain, Schedule $schedule)
     {
         $oldSchedule = clone $schedule;
-        $days = $schedule->getWeekdays();
-
-        foreach ($days as $day) {
-            $day->delete();
-        }
+        $this->delete($schedule);
 
         return new JsonResponse(
             ['deletedSchedule' => $oldSchedule],
             JsonResponse::HTTP_OK);
+    }
+
+    public function delete(Schedule $schedule) {
+        $days = $schedule->getWeekdays;
+
+        foreach ($days as $day) {
+            $day->delete();
+        }
+        $schedule->delete();
     }
 
     private function createSchedule(Curtain $curtain, Request $request): Schedule

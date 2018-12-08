@@ -4,6 +4,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from '@angular/material/icon'
 import {MatButtonModule} from '@angular/material/button'
+import {MatSelectModule} from '@angular/material/select'
 
 @NgModule({
     imports: [
@@ -11,7 +12,8 @@ import {MatButtonModule} from '@angular/material/button'
         MatTooltipModule,
         MatInputModule,
         MatIconModule,
-        MatButtonModule
+        MatButtonModule,
+        MatSelectModule
     ],
     exports: [
         MatFormFieldModule,
@@ -19,6 +21,7 @@ import {MatButtonModule} from '@angular/material/button'
         MatInputModule,
         MatIconModule,
         MatButtonModule,
+        MatSelectModule
     ]
 })
 export class AppMaterialModule {

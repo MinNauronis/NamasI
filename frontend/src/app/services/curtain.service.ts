@@ -91,6 +91,7 @@ export class CurtainService {
         this.log('post curtain');
 
         return this._http.post<Curtain>(this.getUrl(), curtain, httpOptions).pipe(
+            map(response => response['curtain']),
             tap((curtain: Curtain) => this.log(`added curtain with name = ${curtain.title}`)),
             catchError(this.handleError<Curtain>('addCurtain'))
         );
@@ -100,6 +101,7 @@ export class CurtainService {
         this.log('update curtain');
 
         return this._http.put<Curtain>(this.getUrl(curtain.id), curtain, httpOptions).pipe(
+            map(response => response['curtain']),
             tap((curtain: Curtain) => this.log(`updated curtain id=${curtain.id}`)),
             catchError(this.handleError<Curtain>('updatedCurtain'))
         );
@@ -109,6 +111,7 @@ export class CurtainService {
         const id = typeof curtain === 'number' ? curtain : curtain.id;
 
         return this._http.delete<Curtain>(this.getUrl(id)).pipe(
+            map(response => response['curtain']),
             tap(_ => this.log(`deleted curtain id${id}`)),
             catchError(this.handleError<Curtain>('deleteCurtain'))
         )

@@ -12,7 +12,7 @@ class Curtain extends Model
         'isClose',
         'isTurnOn',
         'mode',
-        'selectedSchedule_id',
+        'selectSchedule_id',
     ];
 
     protected $visible = [
@@ -20,7 +20,7 @@ class Curtain extends Model
         'title',
         'microControllerIp',
         'mode',
-        'selectedSchedule_id',
+        'selectSchedule_id',
         'isClose',
     ];
 

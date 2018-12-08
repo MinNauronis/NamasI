@@ -101,6 +101,10 @@ class CurtainController extends Controller
             }
         }
 
+        if($scheduleId === null) {
+            $curtain->selectSchedule_id = null;
+        }
+
 
         return $curtain;
     }
@@ -140,6 +144,11 @@ class CurtainController extends Controller
     public function deleteAction(Request $request, Curtain $curtain)
     {
         $oldCurtain = clone $curtain;
+        $schedules = $curtain->getSchedules;
+        foreach ($schedules as $schedule ){
+            app('App\Http\Controllers\ScheduleController')->delete($schedule);
+        }
+
         $curtain->delete();
 
         return new JsonResponse(

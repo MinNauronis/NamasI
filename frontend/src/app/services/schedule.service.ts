@@ -41,7 +41,7 @@ export class ScheduleService {
 
         url = this._serverUrl + this._schedulesUrl;
         url = url.replace('_slug_', String(slug));
-        if (!id == null) {
+        if (id != null) {
             url = url + id;
         }
 
@@ -90,6 +90,7 @@ export class ScheduleService {
         this.log('post schedule');
 
         return this._http.post<Schedule>(this.getUrl(curtainId), schedule, httpOptions).pipe(
+            map(response => response['schedule']),
             tap((schedule: Schedule) => this.log(`added schedule with name = ${schedule.title}`)),
             catchError(this.handleError<Schedule>('addSchedule'))
         );
@@ -99,6 +100,7 @@ export class ScheduleService {
         this.log('update schedule');
 
         return this._http.put<Schedule>(this.getUrl(curtainId, schedule.id), schedule, httpOptions).pipe(
+            map(response => response['schedule']),
             tap((schedule: Schedule) => this.log(`updated schedule id=${schedule.id}`)),
             catchError(this.handleError<Schedule>('updatedSchedule'))
         );
@@ -106,9 +108,11 @@ export class ScheduleService {
 
     public deleteSchedule(curtainId: number, schedule: Schedule | number): Observable<Schedule> {
         const id = typeof schedule === 'number' ? schedule : schedule.id;
+        this.log('delete schedule');
 
         return this._http.delete<Schedule>(this.getUrl(curtainId, id)).pipe(
-            tap(_ => this.log(`deleted schedule id${id}`)),
+            map(response => response['schedule']),
+            tap(_ => this.log(`deleted schedule ${id}`)),
             catchError(this.handleError<Schedule>('deleteSchedule'))
         )
     }

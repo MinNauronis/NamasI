@@ -3,28 +3,28 @@
         {{this.getDayTitle(day.weekday)}}
     </h5>
 
-    <div class="col-2 mode" (click)="onChangeMode(day); onTouch()"
+    <div class="col-2 mode" (click)="onChangeMode(day)"
          matTooltip={{modeInfo}}
          [matTooltipShowDelay]="2000">
     <span *ngIf="day.mode === 'time'">
-        <i class="far fa-clock fa-lg"></i>
+        <i class="far fa-clock fa-lg click-button"></i>
     </span>
         <span *ngIf="day.mode === 'sun'">
-            <i class="fas fa-sun fa-lg"></i>
+            <i class="fas fa-sun fa-lg click-button"></i>
         </span>
         <span *ngIf="day.mode === 'skip'">
-            <i class="fas fa-ban fa-lg"></i>
+            <i class="fas fa-ban fa-lg click-button"></i>
         </span>
     </div>
 
     <mat-form-field class="col-md-6 timeField">
-        <input matInput type="time" (click)="onTouch()"
+        <input  matInput type="time" (change)="onTimeChange()"
                [disabled]="isTimeDisable()"
                placeholder="Atidarymo laikas" [(ngModel)]="day.openTime">
     </mat-form-field>
 
     <mat-form-field class="col-md-6">
-        <input matInput type="time" (click)="onTouch()"
+        <input matInput type="time" (change)="onTimeChange()"
                [disabled]="isTimeDisable()"
                placeholder="Uždarymo laikas" [(ngModel)]="day.closeTime">
     </mat-form-field>

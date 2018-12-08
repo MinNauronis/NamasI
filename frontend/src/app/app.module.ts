@@ -2,14 +2,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {AppComponent} from './app.component';
-import {HeroesComponent} from './heroes/heroes.component';
-import {HeroDetailComponent} from './hero-detail/hero-detail.component';
-import {MessageComponent} from './message/message.component';
 import {AppRoutingModule} from './app-routing.module';
 import {LocationStrategy, HashLocationStrategy} from "@angular/common";
-import {DashboardComponent} from './dashboard/dashboard.component';
 import {HttpClientModule} from "@angular/common/http";
-import {HeroSearchComponent} from './hero-search/hero-search.component';
 import {CurtainsComponent} from './curtains/curtains.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {ScheduleDetailComponent} from './schedule-detail/schedule-detail.component';
@@ -20,15 +15,11 @@ import { CurtainDetailComponent } from './curtain-detail/curtain-detail.componen
 import { DaysComponent } from './days/days.component';
 import { LoginComponent } from './security/login/login.component';
 import { CreateComponent } from './security/create/create.component';
+import { ScheduleNewComponent } from './schedule-new/schedule-new.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        HeroesComponent,
-        HeroDetailComponent,
-        MessageComponent,
-        DashboardComponent,
-        HeroSearchComponent,
         CurtainsComponent,
         NavigationComponent,
         ScheduleDetailComponent,
@@ -37,6 +28,7 @@ import { CreateComponent } from './security/create/create.component';
         DaysComponent,
         LoginComponent,
         CreateComponent,
+        ScheduleNewComponent,
     ],
     imports: [
         BrowserModule,

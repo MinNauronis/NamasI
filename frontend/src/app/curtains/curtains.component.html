@@ -1,6 +1,26 @@
-<div *ngFor="let curtain of curtains">
-    <li>{{curtain.title}}</li>
-    <a routerLink="/curtains/{{curtain.id}}">
-        toliau
-    </a>
+<div class="row m-2">
+    <div class="col-xl-3 col-md-4 col-sm-6">
+        <div class="curtain">
+
+            <mat-form-field class="w-100" (click)="onNewCreate()">
+                <input matInput type="text"
+                       placeholder="Nauja užuolaida" [(ngModel)]="newCurtain.title">
+            </mat-form-field>
+
+            <i class="fas fa-check my-auto fa-lg button click-button confirm-button"
+               [hidden]="createButtonsHidden"
+               (click)="onNewConfirm()"></i>
+            <i class="fas fa-times my-auto fa-lg button click-button denied-button"
+               [hidden]="createButtonsHidden"
+               (click)="onNewCancel()"></i>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-4 col-sm-6"
+         *ngFor="let curtain of curtains">
+        <div class="curtain" routerLink="/curtains/{{curtain.id}}">
+            <h1>{{curtain.title}}</h1>
+        </div>
+    </div>
+
 </div>
