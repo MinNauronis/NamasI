@@ -64,6 +64,11 @@ export class CurtainDetailComponent implements OnInit {
         );
     }
 
+    setFormValue(value: number | null) {
+        //new value should call defaultChangerHandler() via event form.valueChange
+        this.form.setValue(value);
+    }
+
     defaultChangeHandler(selectedScheduleId: number | null): void {
         if (this.curtain.selectSchedule_id != selectedScheduleId) {
             this.curtain.selectSchedule_id = selectedScheduleId;

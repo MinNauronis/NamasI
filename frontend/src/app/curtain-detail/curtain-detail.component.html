@@ -65,7 +65,7 @@
         <app-schedules
                 [curtainId]="curtain.id"
                 [defaultId]="curtain.selectSchedule_id"
-                (sendDefaultId)="defaultChangeHandler($event)"
+                (sendDefaultId)="setFormValue($event)"
         ></app-schedules>
     </div>
 </div>

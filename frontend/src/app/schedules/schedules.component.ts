@@ -52,11 +52,7 @@ export class SchedulesComponent implements OnInit {
     }
 
     isScheduleSelected(schedule: Schedule) {
-        if (schedule === this.selectedSchedule) {
-            return true;
-        }
-
-        return false;
+        return schedule === this.selectedSchedule;
     }
 
     onDelete(schedule: Schedule): void {
@@ -68,19 +64,11 @@ export class SchedulesComponent implements OnInit {
     }
 
     editRequired(schedule: Schedule): boolean {
-        if (schedule.id === this.editingId) {
-            return true;
-        }
-
-        return false;
+        return schedule.id === this.editingId;
     }
 
     isScheduleDefault(schedule: Schedule): boolean {
-        if (schedule.id != null && schedule.id === this._defaultId) {
-            return true;
-        }
-
-        return;
+        return schedule.id != null && schedule.id === this._defaultId;
     }
 
     /**
@@ -106,11 +94,7 @@ export class SchedulesComponent implements OnInit {
     }
 
     isEditing(schedule: Schedule) :boolean {
-        if (this.editingId === schedule.id) {
-            return true;
-        }
-
-        return false;
+        return this.editingId === schedule.id;
     }
 
     onSetDefault(schedule: Schedule): void {

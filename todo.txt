@@ -5,3 +5,8 @@ backend
 -make visable for admin
 -fix 404 and 405 errors
 -reikaulauti JSON formato (nes nes teksto formatas neveikia)
+DZ:
+*Maksimalus ilgis input laukų
+*Naujas tvarkaraštis per šviesus
+*slaptažodžiui per maži reikalavimai
+*eroras tas pats kai yra jau registruotas email ir kai email formatas netinkamas

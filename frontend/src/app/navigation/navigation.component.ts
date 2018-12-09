@@ -16,7 +16,7 @@ export class NavigationComponent implements OnInit {
 
   onLogout() {
     this._securityService.logoutUser();
-    //this._router.navigateByUrl('login');
+    this._router.navigateByUrl('login');
   }
 
   isLogin() {
