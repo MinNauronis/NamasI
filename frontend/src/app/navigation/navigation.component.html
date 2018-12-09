@@ -1,12 +1,19 @@
 <nav class="navbar navbar-expand-sm navbar-dark fixed-top navigation-background">
-    <a class="navbar-brand button" routerLink="/">Pradinis</a>
+  <a class="navbar-brand button" routerLink="/">Pradinis</a>
 
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a *ngIf="isLogin()"
-               class="nav-link" href="#" (click)="onLogout()">
-                <i class="fa fa-sign-out-alt" aria-hidden="true"></i>
-            </a>
-        </li>
+      <li class="nav-item">
+        <a *ngIf="isLogin()"
+           class="nav-link" href="#" (click)="onLogout()">
+          <i class="fa fa-sign-out-alt" aria-hidden="true"></i>
+          Atsijungti
+        </a>
+      </li>
     </ul>
+  </div>
 </nav>

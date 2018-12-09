@@ -1,9 +1,8 @@
-import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {DayService} from "../services/day.service";
 import {Day} from "../objects/day";
 import {Location} from "@angular/common";
-import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {debounceTime, switchMap} from 'rxjs/operators';
 

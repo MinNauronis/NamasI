@@ -16,6 +16,7 @@ import { DaysComponent } from './days/days.component';
 import { LoginComponent } from './security/login/login.component';
 import { CreateComponent } from './security/create/create.component';
 import { ScheduleNewComponent } from './schedule-new/schedule-new.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { ScheduleNewComponent } from './schedule-new/schedule-new.component';
         LoginComponent,
         CreateComponent,
         ScheduleNewComponent,
+        FooterComponent,
     ],
     imports: [
         BrowserModule,
