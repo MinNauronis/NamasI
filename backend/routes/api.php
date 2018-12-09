@@ -24,24 +24,24 @@ Route::post('/disconnection', 'SecurityController@logout')->middleware('auth:api
 
 //Curtain routes
 Route::get('/curtains', 'CurtainController@getAllAction');
-Route::post('/curtains/', 'CurtainController@postAction');
-Route::get('/curtains/{curtain}', 'CurtainController@getAction');
-Route::put('/curtains/{curtain}', 'CurtainController@putAction');
-Route::patch('/curtains/{curtain}', 'CurtainController@patchAction');
-Route::delete('/curtains/{curtain}', 'CurtainController@deleteAction');
+Route::post('/curtains/', 'CurtainController@postAction')->middleware('auth:api');
+Route::get('/curtains/{curtain}', 'CurtainController@getAction')->middleware('auth:api');
+Route::put('/curtains/{curtain}', 'CurtainController@putAction')->middleware('auth:api');
+Route::patch('/curtains/{curtain}', 'CurtainController@patchAction')->middleware('auth:api');
+Route::delete('/curtains/{curtain}', 'CurtainController@deleteAction')->middleware('auth:api');
 
 //Schedules routes
 Route::get('/curtains/{curtain}/schedules', 'ScheduleController@getAllAction');
-Route::post('/curtains/{curtain}/schedules/', 'ScheduleController@postAction');
-Route::get('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@getAction');
-Route::put('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@putAction');
-Route::patch('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@patchAction');
-Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@deleteAction');
+Route::post('/curtains/{curtain}/schedules/', 'ScheduleController@postAction')->middleware('auth:api');
+Route::get('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@getAction')->middleware('auth:api');
+Route::put('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@putAction')->middleware('auth:api');
+Route::patch('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@patchAction')->middleware('auth:api');
+Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@deleteAction')->middleware('auth:api');
 
 //Days routes
 Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction');
-Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction');
-Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction');
+Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction')->middleware('auth:api');
+Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction')->middleware('auth:api');
 
 Route::fallback(function(){
     return response()->json(['error' => 'url not found'], 400);

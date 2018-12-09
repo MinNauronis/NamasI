@@ -51,8 +51,10 @@ export class CurtainDetailComponent implements OnInit {
     getCurtain() {
         const id = +this._route.snapshot.paramMap.get('id'); //'+' make id to number
         this._curtainService.getCurtain(id).subscribe(
-            curtain => this.curtain = curtain
-        );
+            curtain => {
+                this.curtain = curtain
+                this.form.setValue(this.curtain.selectSchedule_id)
+            });
     }
 
     getSchedules() {
@@ -63,11 +65,13 @@ export class CurtainDetailComponent implements OnInit {
     }
 
     defaultChangeHandler(selectedScheduleId: number | null): void {
-        this.curtain.selectSchedule_id = selectedScheduleId;
-        console.log('curtain received new id: ' + selectedScheduleId);
-        this._curtainService.updateCurtain(this.curtain).subscribe(
-            curtain => console.log("updated: ", curtain)
-        );
+        if (this.curtain.selectSchedule_id != selectedScheduleId) {
+            this.curtain.selectSchedule_id = selectedScheduleId;
+            console.log('curtain received new id: ' + selectedScheduleId);
+            this._curtainService.updateCurtain(this.curtain).subscribe(
+                curtain => console.log("updated: ", curtain)
+            );
+        }
     }
 
     onChangeMode() {

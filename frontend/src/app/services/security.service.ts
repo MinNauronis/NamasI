@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
+import {HttpOptionsService} from "./http-options.service";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,7 +20,7 @@ export class SecurityService {
   private _loginUrl = 'oauth/token';
   private _disconnetionUrl = 'api/disconnection/'
 
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient, private _httpOptionsSercive: HttpOptionsService) {
   }
 
   public createUser(name: string, email: string, password: string): Observable<any> {
@@ -35,6 +36,7 @@ export class SecurityService {
   }
 
   public loginUser(name: string, password: string) {
+    let options = this._httpOptionsSercive.getHttpOptions();
     let body = JSON.stringify({
       username: name,
       password: password,
@@ -44,7 +46,7 @@ export class SecurityService {
     });
     let url = this._serverUrl + this._loginUrl;
     let isAuthorize = new Subject<any>();
-    this._http.post(url, body, httpOptions).subscribe(
+    this._http.post(url, body, options).subscribe(
       response => {
         this.setToken(response['access_token']);
         isAuthorize.next(true);
@@ -79,31 +81,11 @@ export class SecurityService {
   }
 
   public logoutUser() {
+    let options = this._httpOptionsSercive.getHttpOptions();
     let url = this._serverUrl + this._disconnetionUrl;
-    console.log(this.getToken());
-    this._http.post(url, null, this.getHttpOptions()).subscribe(
+    this._http.post(url, null, options).subscribe(
         response => console.log(response)
     );
     this.unsetToken();
   }
-
-  private getHttpOptions() {
-    return {headers : this.getHeaders()};
-  }
-
-  private getHeaders() : HttpHeaders{
-    if(this.getToken()) {
-      return new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization' : this.getToken(),
-      });
-    }
-
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
-  }
-
 }

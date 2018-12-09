@@ -18,4 +18,8 @@ export class NavigationComponent implements OnInit {
     this._securityService.logoutUser();
     //this._router.navigateByUrl('login');
   }
+
+  isLogin() {
+    return this._securityService.isLogin();
+  }
 }

@@ -3,6 +3,7 @@ import {Day} from "../objects/day";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {map, tap, catchError} from 'rxjs/operators';
+import {HttpOptionsService} from "./http-options.service";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -20,18 +21,17 @@ export class DayService {
     private _serverUrl = 'http://localhost:8000/';
     private _daysUrl = 'api/schedules/_slug_/days/';
 
-    constructor(private _http: HttpClient) {
+    constructor(private _http: HttpClient, private _httpOptionsService: HttpOptionsService) {
     }
 
     public getDays(scheduleId: number): Observable<Day[]> {
         this.log('fetch days');
-        this._http.get(this.getUrl(scheduleId), httpOptions).subscribe((res) => {
-            console.log(res['days']);
-        })
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.get(this.getUrl(scheduleId), httpOptions).pipe(
+        return this._http.get(this.getUrl(scheduleId), options).pipe(
             map(response => response['days']),
             tap(_ => this.log('fetched days')),
+            tap(response => console.log(response)),
             catchError(this.handleError('get days', []))
         )
     }
@@ -75,12 +75,11 @@ export class DayService {
 
     public getDay(scheduleId: number, dayId: number): Observable<Day> {
         this.log('fetch day started');
-        this._http.get(this.getUrl(scheduleId, dayId), httpOptions).subscribe(
-            day => console.log(day['day'])
-        );
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.get(this.getUrl(scheduleId, dayId), httpOptions).pipe(
+        return this._http.get(this.getUrl(scheduleId, dayId), options).pipe(
             tap(_ => this.log('fetched day')),
+            tap(day => console.log(day['day'])),
             map(response => response['day']),
             catchError(this.handleError<Day>('getDay'))
         );
@@ -88,8 +87,9 @@ export class DayService {
 
     public updateDay(scheduleId: number, day: Day): Observable<Day> {
         this.log('update day');
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.put<Day>(this.getUrl(scheduleId, day.id), day, httpOptions).pipe(
+        return this._http.put<Day>(this.getUrl(scheduleId, day.id), day, options).pipe(
             tap((day: Day) => this.log(`updated day id=${day}`)),
             catchError(this.handleError<Day>('updatedDay'))
         );

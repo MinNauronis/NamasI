@@ -3,11 +3,12 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Curtain} from "../objects/curtain";
 import {catchError, map, tap} from "rxjs/operators";
+import {HttpOptionsService} from "./http-options.service";
 
 const httpOptions = {
     headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept' : 'application/json'
+        'Accept': 'application/json'
     })
 };
 
@@ -21,19 +22,18 @@ export class CurtainService {
     private _serverUrl = 'http://localhost:8000/';
     private _curtainsUrl = 'api/curtains/';
 
-    constructor(private _http: HttpClient) {
+    constructor(private _http: HttpClient, private _httpOptionsService: HttpOptionsService) {
 
     }
 
     public getCurtains(): Observable<Curtain[]> {
         this.log('fetch curtains');
-        this._http.get(this.getUrl(), httpOptions).subscribe((res) => {
-            console.log(res['curtains']);
-        })
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.get(this.getUrl(), httpOptions).pipe(
+        return this._http.get(this.getUrl(), options).pipe(
             map(response => response['curtains']),
             tap(_ => this.log('fetched curtains')),
+            tap((res) => console.log(res['curtains'])),
             catchError(this.handleError('get curtains', []))
         )
     }
@@ -75,12 +75,11 @@ export class CurtainService {
 
     public getCurtain(id: number): Observable<Curtain> {
         this.log('fetch curtain started');
-        this._http.get(this.getUrl(id), httpOptions).subscribe(
-            curtain => console.log(curtain['curtain'])
-        );
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.get(this.getUrl(id), httpOptions).pipe(
+        return this._http.get(this.getUrl(id), options).pipe(
             tap(_ => this.log('fetched curtain')),
+            tap(curtain => console.log(curtain['curtain'])),
             map(response => response['curtain']),
             catchError(this.handleError<Curtain>('getCurtain'))
         );
@@ -88,8 +87,9 @@ export class CurtainService {
 
     public addCurtain(curtain: Curtain): Observable<Curtain> {
         this.log('post curtain');
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.post<Curtain>(this.getUrl(), curtain, httpOptions).pipe(
+        return this._http.post<Curtain>(this.getUrl(), curtain, options).pipe(
             map(response => response['curtain']),
             tap((curtain: Curtain) => this.log(`added curtain with name = ${curtain.title}`)),
             catchError(this.handleError<Curtain>('addCurtain'))
@@ -98,8 +98,9 @@ export class CurtainService {
 
     public updateCurtain(curtain: Curtain): Observable<Curtain> {
         this.log('update curtain');
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.put<Curtain>(this.getUrl(curtain.id), curtain, httpOptions).pipe(
+        return this._http.put<Curtain>(this.getUrl(curtain.id), curtain, options).pipe(
             map(response => response['curtain']),
             tap((curtain: Curtain) => this.log(`updated curtain id=${curtain.id}`)),
             catchError(this.handleError<Curtain>('updatedCurtain'))
@@ -108,8 +109,9 @@ export class CurtainService {
 
     public deleteCurtain(curtain: Curtain | number): Observable<Curtain> {
         const id = typeof curtain === 'number' ? curtain : curtain.id;
+        let options = this._httpOptionsService.getHttpOptions();
 
-        return this._http.delete<Curtain>(this.getUrl(id)).pipe(
+        return this._http.delete<Curtain>(this.getUrl(id), options).pipe(
             map(response => response['curtain']),
             tap(_ => this.log(`deleted curtain id${id}`)),
             catchError(this.handleError<Curtain>('deleteCurtain'))

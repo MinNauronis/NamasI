@@ -1,36 +1,45 @@
-<h1>Registracija</h1>
-<form class="form mx-auto" (ngSubmit)="onSubmit()">
-    <mat-form-field class="form-field mx-auto" appearance="outline">
-        <mat-label>Naudotojo vardas</mat-label>
-        <input matInput placeholder="Jūsų vardas" [formControl]="form.controls['name']">
-    </mat-form-field>
+<div class="form-container elements-main mx-auto">
 
-    <mat-form-field class="form-field mx-auto" appearance="outline">
-        <mat-label>El. paštas</mat-label>
-        <input matInput placeholder="Jūsų el. paštas" [formControl]="emailFormControl"
-               [errorStateMatcher]="matcher">
-        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-            Prašome įvesti teisingą el. paštą
-        </mat-error>
-        <mat-error *ngIf="emailFormControl.hasError('required')">
-            El. paštas yra <strong>būtinas</strong>
-        </mat-error>
-    </mat-form-field>
+    <h1>Registracija</h1>
+    <form class="form mx-auto" (ngSubmit)="onSubmit()">
+        <mat-form-field class="form-field mx-auto" appearance="outline">
+            <mat-label>Naudotojo vardas</mat-label>
+            <input matInput placeholder="Jūsų vardas" [formControl]="form.controls['name']">
+        </mat-form-field>
 
-    <mat-form-field class="form-field mx-auto" appearance="outline">
-        <mat-label>Slaptažodis</mat-label>
-        <input matInput placeholder="Jūsų slaptažodis" [formControl]="form.controls['password']"
-               [type]="hidePassword ? 'password' : 'text'">
-        <mat-icon matSuffix (click)="hidePassword = !hidePassword">
-            {{hidePassword ? 'visibility_off' : 'visibility_on'}}
-        </mat-icon>
-    </mat-form-field>
+        <mat-form-field class="form-field mx-auto" appearance="outline">
+            <mat-label>El. paštas</mat-label>
+            <input matInput placeholder="Jūsų el. paštas" [formControl]="emailFormControl"
+                   [errorStateMatcher]="matcher">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                Prašome įvesti teisingą el. paštą
+            </mat-error>
+            <mat-error *ngIf="emailFormControl.hasError('required')">
+                El. paštas yra <strong>būtinas</strong>
+            </mat-error>
+        </mat-form-field>
 
-    <button mat-raised-button type="submit"
-            class="btn-primary form-field"
-            [disabled]="!form.valid || !emailFormControl.valid || isSubmitted"
-    >
-        Registruotis
-    </button>
-    <h5 class="notice" *ngIf="isResponseError">Deja, el. paštas jau užimtas</h5>
-</form>
+        <mat-form-field class="form-field mx-auto" appearance="outline">
+            <mat-label>Slaptažodis</mat-label>
+            <input matInput placeholder="Jūsų slaptažodis" [formControl]="form.controls['password']"
+                   [type]="hidePassword ? 'password' : 'text'">
+            <mat-icon matSuffix (click)="hidePassword = !hidePassword">
+                {{hidePassword ? 'visibility_off' : 'visibility_on'}}
+            </mat-icon>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit"
+                class="btn-primary form-field"
+                [disabled]="!form.valid || !emailFormControl.valid || isSubmitted"
+        >
+            Registruotis
+        </button>
+        <h5 class="notice" *ngIf="isResponseError">Deja, el. paštas jau užimtas</h5>
+
+        <button mat-raised-button type="reset"
+                routerLink="/login"
+                color="accent" class="form-field">
+            Prisijungti
+        </button>
+    </form>
+</div>

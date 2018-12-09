@@ -15,8 +15,7 @@
 
             <mat-form-field class="w-100">
                 <mat-select disableOptionCentering [formControl]="form"
-                            placeholder="Numatytasis tvarkaraštis"
-                            [(value)]="curtain.selectSchedule_id">
+                            placeholder="Numatytasis tvarkaraštis">
                     <mat-option [value]="null">-Nepasirinkta-</mat-option>
                     <ng-container *ngFor="let schedule of schedules">
                         <mat-option [value]="schedule.id">{{schedule.title}}</mat-option>

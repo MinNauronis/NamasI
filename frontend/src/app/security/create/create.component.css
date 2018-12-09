@@ -1,3 +1,10 @@
+.form-container {
+  margin: 25px;
+  padding: 25px;
+  max-width: 350px;
+  height: 500px;
+}
+
 .form {
   min-width: 150px;
   max-width: 300px;
@@ -6,6 +13,7 @@
 
 .form-field {
   width: 100%;
+  margin-bottom: 5px;
 }
 
 h1, h5 {

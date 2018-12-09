@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Schedule} from "../objects/schedule";
 import {catchError, map, tap} from "rxjs/operators";
+import {HttpOptionsService} from "./http-options.service";
 
 const httpOptions = {
     headers: new HttpHeaders({
@@ -20,18 +21,17 @@ export class ScheduleService {
     private _serverUrl = 'http://localhost:8000/';
     private _schedulesUrl = 'api/curtains/_slug_/schedules/';
 
-    constructor(private _http: HttpClient) {
+    constructor(private _http: HttpClient, private _httpOptionsSercive: HttpOptionsService) {
     }
 
     public getSchedules(curtainId: number): Observable<Schedule[]> {
         this.log('fetch schedules');
-        this._http.get(this.getUrl(curtainId), httpOptions).subscribe((res) => {
-            console.log(res['schedules']);
-        })
+        let options = this._httpOptionsSercive.getHttpOptions();
 
-        return this._http.get(this.getUrl(curtainId), httpOptions).pipe(
+        return this._http.get(this.getUrl(curtainId), options).pipe(
             map(response => response['schedules']),
             tap(_ => this.log('fetched schedules')),
+            tap(res => console.log(res)),
             catchError(this.handleError('get schedules', []))
         )
     }
@@ -75,12 +75,11 @@ export class ScheduleService {
 
     public getSchedule(curtainId: number, scheduleId: number): Observable<Schedule> {
         this.log('fetch schedule started');
-        this._http.get(this.getUrl(curtainId, scheduleId), httpOptions).subscribe(
-            schedule => console.log(schedule['schedule'])
-        );
+        let options = this._httpOptionsSercive.getHttpOptions();
 
-        return this._http.get(this.getUrl(curtainId, scheduleId), httpOptions).pipe(
+        return this._http.get(this.getUrl(curtainId, scheduleId), options).pipe(
             tap(_ => this.log('fetched schedule')),
+            tap(schedule => console.log(schedule['schedule'])),
             map(response => response['schedule']),
             catchError(this.handleError<Schedule>('getSchedule'))
         );
@@ -88,8 +87,9 @@ export class ScheduleService {
 
     public addSchedule(curtainId: number, schedule: Schedule): Observable<Schedule> {
         this.log('post schedule');
+        let options = this._httpOptionsSercive.getHttpOptions();
 
-        return this._http.post<Schedule>(this.getUrl(curtainId), schedule, httpOptions).pipe(
+        return this._http.post<Schedule>(this.getUrl(curtainId), schedule, options).pipe(
             map(response => response['schedule']),
             tap((schedule: Schedule) => this.log(`added schedule with name = ${schedule.title}`)),
             catchError(this.handleError<Schedule>('addSchedule'))
@@ -98,8 +98,9 @@ export class ScheduleService {
 
     public updateSchedule(curtainId: number, schedule: Schedule): Observable<Schedule> {
         this.log('update schedule');
+        let options = this._httpOptionsSercive.getHttpOptions();
 
-        return this._http.put<Schedule>(this.getUrl(curtainId, schedule.id), schedule, httpOptions).pipe(
+        return this._http.put<Schedule>(this.getUrl(curtainId, schedule.id), schedule, options).pipe(
             map(response => response['schedule']),
             tap((schedule: Schedule) => this.log(`updated schedule id=${schedule.id}`)),
             catchError(this.handleError<Schedule>('updatedSchedule'))
@@ -109,8 +110,9 @@ export class ScheduleService {
     public deleteSchedule(curtainId: number, schedule: Schedule | number): Observable<Schedule> {
         const id = typeof schedule === 'number' ? schedule : schedule.id;
         this.log('delete schedule');
+        let options = this._httpOptionsSercive.getHttpOptions();
 
-        return this._http.delete<Schedule>(this.getUrl(curtainId, id)).pipe(
+        return this._http.delete<Schedule>(this.getUrl(curtainId, id), options).pipe(
             map(response => response['schedule']),
             tap(_ => this.log(`deleted schedule ${id}`)),
             catchError(this.handleError<Schedule>('deleteSchedule'))
