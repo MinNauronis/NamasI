@@ -1,7 +1,6 @@
 .schedule {
     margin: 5px;
     cursor: pointer;
-    background: #ede6e3;
     border-radius: 5px;
 }
 
@@ -21,14 +20,6 @@
     height: 7px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-}
-
-.selected {
-    background: #f06449;
-}
-
-.default {
-    background: #342df0;
 }
 
 .photo-container {
@@ -51,7 +42,6 @@ i.image {
     display: inline-block;
     margin: 5px 5px 5px;
     width: 190px;
-    color: #eae2b7;
     font-family: 'Roboto', sans-serif;
     font-size: 120%;
 
@@ -61,7 +51,7 @@ i.image {
     overflow: hidden;
 }
 
-.click-button {
+.button {
     padding: 5px;
     margin-right: 3px;
     border-radius: 50%;

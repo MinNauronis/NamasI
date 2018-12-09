@@ -1,7 +1,6 @@
 .schedule {
     margin: 5px;
     cursor: auto;
-    background: #ede6e3;
     border-radius: 5px;
 }
 
@@ -20,29 +19,7 @@
     border-bottom-right-radius: 5px;
 }
 
-.selected {
-    background: #f06449;
-}
-
 .button {
     padding: 5px;
     margin-right: 3px;
-}
-
-.click-button {
-    cursor: pointer;
-    border-radius: 50%;
-}
-
-.click-button:hover {
-    background: #b3e8ca;
-    box-shadow: 2px 2px 5px grey;
-}
-
-.confirm-button:hover {
-    color: green;
-}
-
-.denied-button:hover {
-    color: red;
 }

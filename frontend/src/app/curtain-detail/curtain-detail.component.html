@@ -1,6 +1,6 @@
 <div *ngIf="curtain">
-    <div class="curtain flex-container">
-        <div class="col-10">
+    <div class="row curtain">
+        <div class="col-md-10">
             <ng-container *ngIf="_hasEditTitle; else title">
                 <mat-form-field class="w-100">
                     <input matInput type="text" placeholder="Pavadinimas" [(ngModel)]="curtain.title">
@@ -25,44 +25,40 @@
             </mat-form-field>
         </div>
 
-        <div class="col-1 icon-size flex-container column">
-            <div class="flex-container to-end"
-                 (click)="onChangeOpenClose()">
+        <div class="col-md-2 flex-container icon-size">
+            <div (click)="onChangeOpenClose()">
                 <ng-container *ngIf="curtain.isClose; else open">
-                    <i class="far fa-moon click-button"></i>
+                    <i class="far fa-moon button event-button"></i>
                 </ng-container>
                 <ng-template #open>
-                    <i class="fas fa-sun click-button"></i>
+                    <i class="fas fa-sun button event-button"></i>
                 </ng-template>
             </div>
 
-            <div class="flex-container to-end"
-                 (click)="onChangeMode()">
+            <div (click)="onChangeMode()">
                 <ng-container *ngIf="curtain.mode === 'auto'; else manualMode">
-                    <i class="material-icons icon-size click-button">
+                    <i class="material-icons icon-mat-size button event-button">
                         autorenew
                     </i>
                 </ng-container>
                 <ng-template #manualMode>
                     <ng-container *ngIf="curtain.mode === 'manual'; else offMode">
-                        <i class="fas fa-screwdriver click-button"></i>
+                        <i class="fas fa-screwdriver button event-button"></i>
                     </ng-container>
                 </ng-template>
                 <ng-template #offMode>
-                    <i class="fas fa-power-off click-button"></i>
+                    <i class="fas fa-power-off button event-button"></i>
                 </ng-template>
             </div>
-        </div>
-        <div class="col-1 icon-size flex-container column">
-            <div class="flex-container to-end"
-                 (click)="onDelete()">
-                <i class="fas fa-trash-alt click-button"></i>
+
+            <div                  (click)="onEdit()">
+                <i class="fas fa-pencil-alt button event-button"
+                   [class.select]="_hasEditTitle"
+                   [class.confirm]="_hasEditTitle"></i>
             </div>
 
-            <div class="flex-container to-end"
-                 [class.confirm]="_hasEditTitle"
-                 (click)="onEdit()">
-                <i class="fas fa-pencil-alt click-button"></i>
+            <div (click)="onDelete()">
+                <i class="fas fa-trash-alt button event-button"></i>
             </div>
         </div>
     </div>

@@ -1,3 +1,11 @@
-.fa-sign-out{
-    color: red !important;
+.navigation-background {
+    background: #000B0F;
+}
+
+.button {
+
+}
+
+.button:hover {
+    color: #ACBEC4;
 }

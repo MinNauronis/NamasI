@@ -26,9 +26,10 @@ export class CurtainsComponent implements OnInit {
     }
 
     onNewConfirm() {
-        this._curtainService.addCurtain(this.newCurtain).subscribe(curtain => this.curtains.push(curtain));
-        this.newCurtain.title = '';
-        this.onNewCancel();
+        if (this.newCurtain.title != '') {
+            this._curtainService.addCurtain(this.newCurtain).subscribe(curtain => this.curtains.push(curtain));
+            this.onNewCancel();
+        }
     }
 
     onNewCreate() {
@@ -37,5 +38,6 @@ export class CurtainsComponent implements OnInit {
 
     onNewCancel() {
         this.createButtonsHidden = true;
+        this.newCurtain.title = '';
     }
 }

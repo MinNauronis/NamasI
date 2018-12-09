@@ -7,13 +7,13 @@
          matTooltip={{modeInfo}}
          [matTooltipShowDelay]="2000">
     <span *ngIf="day.mode === 'time'">
-        <i class="far fa-clock fa-lg click-button"></i>
+        <i class="far fa-clock fa-lg button event-button"></i>
     </span>
         <span *ngIf="day.mode === 'sun'">
-            <i class="fas fa-sun fa-lg click-button"></i>
+            <i class="fas fa-sun fa-lg button event-button"></i>
         </span>
         <span *ngIf="day.mode === 'skip'">
-            <i class="fas fa-ban fa-lg click-button"></i>
+            <i class="fas fa-ban fa-lg button event-button"></i>
         </span>
     </div>
 
@@ -28,15 +28,4 @@
                [disabled]="isTimeDisable()"
                placeholder="Uždarymo laikas" [(ngModel)]="day.closeTime">
     </mat-form-field>
-</div>
-
-<div class="lds-roller" *ngIf="false">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
 </div>

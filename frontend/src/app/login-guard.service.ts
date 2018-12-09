@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {SecurityService} from "./services/security.service";
 
@@ -8,7 +8,7 @@ import {SecurityService} from "./services/security.service";
 })
 export class LoginGuard implements CanActivate {
 
-  constructor(private _securityService: SecurityService) {
+  constructor(private _securityService: SecurityService, private _router: Router) {
   }
 
   canActivate() {
@@ -17,7 +17,7 @@ export class LoginGuard implements CanActivate {
       return true;
     }
 
-    window.alert('Prašome prisijungti');
+    this._router.navigateByUrl('login')
     return false;
   }
 }

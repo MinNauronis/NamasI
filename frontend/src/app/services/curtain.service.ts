@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {MessageService} from "../message/message.service";
 import {Observable, of} from "rxjs";
 import {Curtain} from "../objects/curtain";
 import {catchError, map, tap} from "rxjs/operators";
@@ -22,7 +21,7 @@ export class CurtainService {
     private _serverUrl = 'http://localhost:8000/';
     private _curtainsUrl = 'api/curtains/';
 
-    constructor(private _http: HttpClient, private _messageService: MessageService) {
+    constructor(private _http: HttpClient) {
 
     }
 

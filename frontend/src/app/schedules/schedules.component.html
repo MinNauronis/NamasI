@@ -1,16 +1,16 @@
 <app-schedule-new (newSchedule)="createSchedule($event)"></app-schedule-new>
 
-<div class="schedule" *ngFor="let schedule of schedules">
+<div class="elements-main schedule" *ngFor="let schedule of schedules">
     <div class="schedule-header"
-         [class.default]="isScheduleDefault(schedule) && !isScheduleSelected(schedule)"
-         [class.selected]="isScheduleSelected(schedule)">
+         [class.elements-selected-1]="isScheduleDefault(schedule) && !isScheduleSelected(schedule)"
+         [class.elements-selected-2]="isScheduleSelected(schedule)">
         <div class="col-1 photo-container"
              (click)="onScheduleSelect(schedule)">
             <i class="fas fa-images image"></i>
         </div>
 
         <div *ngIf="!editRequired(schedule); else nameEditor"
-             class="col my-auto text"
+             class="col my-auto text text-color"
              (click)="onScheduleSelect(schedule)">
             {{schedule.title}}
         </div>
@@ -22,18 +22,18 @@
         </ng-template>
 
         <i *ngIf="isScheduleDefault(schedule); else notDefault"
-           class="fas fa-circle fa-lg my-auto click-button"
+           class="fas fa-circle fa-lg my-auto button event-button"
            (click)="onSetDefault(schedule)"></i>
         <ng-template #notDefault>
-            <i class="far fa-circle fa-lg my-auto click-button"
+            <i class="far fa-circle fa-lg my-auto button event-button"
                (click)="onSetDefault(schedule)"></i>
         </ng-template>
 
-        <i class="fas fa-pencil-alt my-auto fa-lg click-button"
-           [class.saving-pen]="editingId"
-           [class.editing]="isEditing(schedule)"
+        <i class="fas fa-pencil-alt my-auto fa-lg button event-button"
+           [class.select]="isEditing(schedule)"
+           [class.confirm]="isEditing(schedule)"
            (click)="onEdit(schedule)"></i>
-        <i class="fas fa-trash-alt my-auto fa-lg click-button"
+        <i class="fas fa-trash-alt my-auto fa-lg button event-button"
            (click)="onDelete(schedule)"></i>
     </div>
 
@@ -42,6 +42,6 @@
                          [schedule]="schedule"></app-schedule-detail>
 
     <div class="schedule-footer" (click)="onScheduleSelect(schedule)"
-         [class.default]="isScheduleDefault(schedule) && !isScheduleSelected(schedule)"
-         [class.selected]="isScheduleSelected(schedule)"></div>
+         [class.elements-selected-1]="isScheduleDefault(schedule) && !isScheduleSelected(schedule)"
+         [class.elements-selected-2]="isScheduleSelected(schedule)"></div>
 </div>

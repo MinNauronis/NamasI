@@ -1,10 +1,12 @@
 .curtain {
-    background: #857b26;
-    padding: 8px 1% 7px 1%;
+    background: #33a1fd;
+    padding: 8px 10px 7px 10px;
 }
 
 .flex-container {
     display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
 }
 
 .flex-container.column {
@@ -16,22 +18,21 @@
     justify-content: flex-end;
 }
 
+.icon-mat-size {
+    font-size: 39px;
+}
+
 .icon-size {
     font-size: 35px;
 }
 
-.click-button {
-    cursor: pointer;
+.button {
     padding: 5px;
     margin-right: 3px;
-    border-radius: 50%;
 }
 
-.click-button:hover {
-    background: #b3e8ca;
-    box-shadow: 2px 2px 5px grey;
-}
-
-.confirm {
-    color: #1d643b;
+@media screen and (min-width: 768px) {
+    .flex-container{
+        max-width: 165px;
+    }
 }

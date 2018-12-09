@@ -1,5 +1,7 @@
 .mode {
     padding: 5px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .title {
@@ -7,16 +9,8 @@
     padding-left: 10px;
 }
 
-.click-button {
-    cursor: pointer;
-    padding: 5px;
-    margin-right: 3px;
-    border-radius: 50%;
-}
-
-.click-button:hover {
-    background: #b3e8ca;
-    box-shadow: 2px 2px 5px grey;
+.button {
+    padding: 15px;
 }
 
 input {

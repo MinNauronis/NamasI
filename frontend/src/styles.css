@@ -3,39 +3,112 @@
 @import "loader.css";
 @import "slider.css";
 
+/*
+backgroud   - #31393c
+small text  - #FAFFFD
+elements    - #2176ff
+*/
 /* Application-wide Styles */
 h1 {
-    color: #369;
+    color: #540D6E;
     font-family: 'Roboto', sans-serif;
     font-size: 250%;
 }
+
 h2, h3 {
-    color: #444;
+    color: #540D6E;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: lighter;
 }
+
 body {
     margin: 2em;
 }
-body, input[type="text"], button {
-    color: #888;
+
+input[type="text"], button {
+    color: #25283D;
     font-family: Cambria, Georgia;
 }
+
 /* everywhere else */
 * {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.mainColor {
-    background: #1d3557 !important;
-    color: #eae2b7;
+.main-background {
+    background: #31393c !important;
+    color: #FAFFFD;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.progressSpinner {
-
+.elements-main {
+    background: #ACBEC4;
 }
+
+.elements-selected-1 {
+    background: #5D99AF;
+}
+
+.elements-selected-2 {
+    background: #0FAAE2;
+}
+
+.elements-selected-3 {
+    background: #ede6e3;
+}
+
+.event-button {
+    color: #EEE82C;
+    cursor: pointer;
+}
+
+.event-button:hover {
+    color: #f6511d;
+}
+
+.event-button.not-click {
+    cursor: default;
+}
+
+.event-button.not-click:hover {
+    color: #EEE82C;
+}
+
+.event-button.select {
+    color: #FFE8B2;
+}
+
+.event-button.confirm:hover {
+    color: #09814a;
+}
+
+.event-button.denied:hover {
+    color: #B20000;
+}
+
+.text-color{
+    color: #25283D;
+}
+
+.text-color-2 {
+    color: #540D6E
+}
+
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+

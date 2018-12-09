@@ -40,7 +40,7 @@ export class SecurityService {
       password: password,
       grant_type: 'password',
       client_id: 2,
-      client_secret: 'YIHGCmOEU8sdlxlm0OE9mN3n7PMSBFtMIho18fdS'
+      client_secret: 'ExbilseQaluQ4uF4wqmNprzi7bKTkbZsfDuw5gbo'
     });
     let url = this._serverUrl + this._loginUrl;
     let isAuthorize = new Subject<any>();
@@ -79,17 +79,31 @@ export class SecurityService {
   }
 
   public logoutUser() {
-    let options = httpOptions;
-    options.headers.append('Authorization', this.getToken());
-
     let url = this._serverUrl + this._disconnetionUrl;
-
-    this._http.post(url, null, options).subscribe(
-      response => {
-        this.unsetToken();
-      }
+    console.log(this.getToken());
+    this._http.post(url, null, this.getHttpOptions()).subscribe(
+        response => console.log(response)
     );
+    this.unsetToken();
+  }
 
+  private getHttpOptions() {
+    return {headers : this.getHeaders()};
+  }
+
+  private getHeaders() : HttpHeaders{
+    if(this.getToken()) {
+      return new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization' : this.getToken(),
+      });
+    }
+
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
   }
 
 }
