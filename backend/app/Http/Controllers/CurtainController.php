@@ -57,7 +57,7 @@ class CurtainController extends Controller
         if ($hasCreate) {
             $validator = Validator::make($request->all(), [
                 'title' => 'bail|required|string|max:190',
-                'microControllerIp' => 'bail|nullable|regex:[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]',
+                'microControllerIp' => 'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
                 'mode' => Rule::in(['off', 'auto', 'manual']),
@@ -66,7 +66,7 @@ class CurtainController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'title' => 'bail|string|max:190',
-                'microControllerIp' => 'bail|nullable|regex:[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]',
+                'microControllerIp' => 'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
                 'mode' => Rule::in(['off', 'auto', 'manual']),
@@ -96,7 +96,8 @@ class CurtainController extends Controller
         $scheduleId = $request->input('selectSchedule_id');
         //should be always false on creation
         if (!$hasCreate && is_numeric($scheduleId)) {
-            if (Schedule::find($scheduleId)) {
+            $schedule = Schedule::find($scheduleId);
+            if ($schedule->curtain_id === $curtain->id) {
                 $curtain->selectSchedule_id = $request->input('selectSchedule_id');
             }
         }

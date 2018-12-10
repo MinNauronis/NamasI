@@ -23,7 +23,7 @@ Route::post('/registration', 'SecurityController@createUser');
 Route::post('/disconnection', 'SecurityController@logout')->middleware('auth:api');
 
 //Curtain routes
-Route::get('/curtains', 'CurtainController@getAllAction');
+Route::get('/curtains', 'CurtainController@getAllAction')->middleware('auth:api');
 Route::post('/curtains/', 'CurtainController@postAction')->middleware('auth:api');
 Route::get('/curtains/{curtain}', 'CurtainController@getAction')->middleware('auth:api');
 Route::put('/curtains/{curtain}', 'CurtainController@putAction')->middleware('auth:api');
@@ -32,14 +32,14 @@ Route::delete('/curtains/{curtain}', 'CurtainController@deleteAction')->middlewa
 
 //Schedules routes
 Route::get('/curtains/{curtain}/schedules', 'ScheduleController@getAllAction');
-Route::post('/curtains/{curtain}/schedules/', 'ScheduleController@postAction')->middleware('auth:api');
+Route::post('/curtains/{curtain}/schedules/', 'ScheduleController@postAction')->middleware('auth:api')->middleware('auth:api');
 Route::get('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@getAction')->middleware('auth:api');
 Route::put('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@putAction')->middleware('auth:api');
 Route::patch('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@patchAction')->middleware('auth:api');
 Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@deleteAction')->middleware('auth:api');
 
 //Days routes
-Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction');
+Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction')->middleware('auth:api');
 Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction')->middleware('auth:api');
 Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction')->middleware('auth:api');
 
