@@ -35,6 +35,7 @@ class Curtain extends Model
      */
     public function getSchedules()
     {
+
         return $this->hasMany('App\Schedule');
     }
 

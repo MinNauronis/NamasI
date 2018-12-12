@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Schedule;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Curtain;
-use App\Service\DemoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -19,7 +17,7 @@ class CurtainController extends Controller
         return new JsonResponse(['curtains' => $curtains], JsonResponse::HTTP_OK);
     }
 
-    public function getAction(Request $request, Curtain $curtain)
+    public function getAction(Curtain $curtain)
     {
         //TODO
         /*if($curtain->user_id() !== user)
@@ -57,7 +55,8 @@ class CurtainController extends Controller
         if ($hasCreate) {
             $validator = Validator::make($request->all(), [
                 'title' => 'bail|required|string|max:190',
-                'microControllerIp' => 'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
+                'microControllerIp' =>
+                    'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
                 'mode' => Rule::in(['off', 'auto', 'manual']),
@@ -66,7 +65,8 @@ class CurtainController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'title' => 'bail|string|max:190',
-                'microControllerIp' => 'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
+                'microControllerIp' =>
+                    'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
                 'mode' => Rule::in(['off', 'auto', 'manual']),
@@ -102,7 +102,7 @@ class CurtainController extends Controller
             }
         }
 
-        if($scheduleId === null) {
+        if ($scheduleId === null) {
             $curtain->selectSchedule_id = null;
         }
 
@@ -146,11 +146,14 @@ class CurtainController extends Controller
     {
         $oldCurtain = clone $curtain;
         $schedules = $curtain->getSchedules;
-        foreach ($schedules as $schedule ){
+        foreach ($schedules as $schedule) {
             app('App\Http\Controllers\ScheduleController')->delete($schedule);
         }
 
-        $curtain->delete();
+        try {
+            $curtain->delete();
+        } catch (\Exception $e) {
+        }
 
         return new JsonResponse(
             ['deletedCurtain' => $oldCurtain],

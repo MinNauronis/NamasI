@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
 use App\Curtain;
 use App\Schedule;
-use App\Weekday;
+use Validator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
-    public function getAllAction(Request $request, Curtain $curtain)
+    public function getAllAction(Curtain $curtain)
     {
         $curtainId = $curtain->id;
         $schedules = Schedule::where('curtain_id', '=', $curtainId)->get();
         return new JsonResponse(['schedules' => $schedules], JsonResponse::HTTP_OK);
     }
 
-    public function getAction(Request $request, Curtain $curtain, Schedule $schedule)
+    public function getAction(Curtain $curtain, Schedule $schedule)
     {
-        if($schedule->curtain_id !== $curtain->id)
-        {
+        if ($schedule->curtain_id !== $curtain->id) {
             return new JsonResponse(['schedule' => null], JsonResponse::HTTP_NOT_FOUND);
         }
 
@@ -66,7 +64,7 @@ class ScheduleController extends Controller
         return null;
     }
 
-    public function putAction(Request $request, Curtain $curtain, Schedule $schedule)
+    public function putAction(Request $request, Schedule $schedule)
     {
         $badResponse = $this->validateSchedule($request, false);
         if (isset($badResponse)) {
@@ -82,7 +80,7 @@ class ScheduleController extends Controller
             JsonResponse::HTTP_OK);
     }
 
-    public function patchAction(Request $request, Curtain $curtain, Schedule $schedule)
+    public function patchAction(Request $request, Schedule $schedule)
     {
         $badResponse = $this->validateSchedule($request, false);
         if (isset($badResponse)) {
@@ -98,7 +96,7 @@ class ScheduleController extends Controller
             JsonResponse::HTTP_OK);
     }
 
-    public function deleteAction(Request $request, Curtain $curtain, Schedule $schedule)
+    public function deleteAction(Schedule $schedule)
     {
         $oldSchedule = clone $schedule;
         $this->delete($schedule);
@@ -108,13 +106,17 @@ class ScheduleController extends Controller
             JsonResponse::HTTP_OK);
     }
 
-    public function delete(Schedule $schedule) {
+    public function delete(Schedule $schedule)
+    {
         $days = $schedule->getWeekdays;
 
         foreach ($days as $day) {
             $day->delete();
         }
-        $schedule->delete();
+        try {
+            $schedule->delete();
+        } catch (\Exception $e) {
+        }
     }
 
     private function createSchedule(Curtain $curtain, Request $request): Schedule
@@ -133,7 +135,6 @@ class ScheduleController extends Controller
             $day->weekday = $i;
             $day->save();
         }
-
         return $schedule;
     }
 

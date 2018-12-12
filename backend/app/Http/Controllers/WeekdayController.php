@@ -21,8 +21,7 @@ class WeekdayController
 
     public function getAction(Request $request, Schedule $schedule, Weekday $weekday)
     {
-        if($weekday->schedule_id !== $schedule->id)
-        {
+        if ($weekday->schedule_id !== $schedule->id) {
             return new JsonResponse(['day' => null], JsonResponse::HTTP_NOT_FOUND);
         }
 
@@ -32,6 +31,11 @@ class WeekdayController
     public function putAction(Request $request, Schedule $schedule, Weekday $weekday)
     {
         $oldDay = clone $weekday;
+
+        $badResponse = $this->validateWeekday($request, false);
+        if (isset($badResponse)) {
+            return $badResponse;
+        }
 
         if ($request->input('mode'))
             $weekday->mode = $request->input('mode');
@@ -54,9 +58,9 @@ class WeekdayController
     private function validateWeekday(Request $request, bool $hasCreate = true)
     {
         $validator = Validator::make($request->all(), [
-            'mode' =>       Rule::in(['sun', 'time', 'skip']),
-            'openTime' =>   'bail|nullable|date_format:"H:i:s"',
-            'closeTime' =>  'bail|nullable|date_format:"H:i:s"',
+            'mode' => Rule::in(['sun', 'time', 'skip']),
+            'openTime' => 'bail|nullable|date_format:"H:i:s"',
+            'closeTime' => 'bail|nullable|date_format:"H:i:s"',
         ]);
 
         if ($validator->fails()) {

@@ -27,6 +27,15 @@ class Schedule extends Model
         'created_at',
         'updated_at'
     ];
+    private $image;
+    private $title;
+    private $id;
+    private $image;
+    private $title;
+    private $curtain_id;
+    private $getWeekdays;
+    private $curtain_id;
+
     /**
      * Schedule's curtain
      */
