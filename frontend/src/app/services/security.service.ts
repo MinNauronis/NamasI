@@ -42,7 +42,7 @@ export class SecurityService {
       password: password,
       grant_type: 'password',
       client_id: 2,
-      client_secret: 'YIHGCmOEU8sdlxlm0OE9mN3n7PMSBFtMIho18fdS'
+      client_secret: '25PL4LDm4XZ9CL5BNzZtgnOa1fg3ckviexo2hNsW'
     });
     let url = this._serverUrl + this._loginUrl;
     let isAuthorize = new Subject<any>();

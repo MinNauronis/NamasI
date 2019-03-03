@@ -26,9 +26,9 @@ export class LoginComponent implements OnInit {
         ]);
     matcher = new MyErrorStateMatcher();
     hidePassword = true;
-    passwordForm: FormControl;
-    isSubmitted = false;
-    isResponseError = false;
+  passwordForm: FormControl;
+  isSubmitted = false;
+  isResponseError = false;
 
     constructor(
         private _router: Router,

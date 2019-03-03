@@ -22,26 +22,32 @@ use Illuminate\Support\Facades\Route;
 Route::post('/registration', 'SecurityController@createUser');
 Route::post('/disconnection', 'SecurityController@logout')->middleware('auth:api');
 
-//Curtain routes
-Route::get('/curtains', 'CurtainController@getAllAction')->middleware('auth:api');
-Route::post('/curtains/', 'CurtainController@postAction')->middleware('auth:api');
-Route::get('/curtains/{curtain}', 'CurtainController@getAction')->middleware('auth:api');
-Route::put('/curtains/{curtain}', 'CurtainController@putAction')->middleware('auth:api');
-Route::patch('/curtains/{curtain}', 'CurtainController@patchAction')->middleware('auth:api');
-Route::delete('/curtains/{curtain}', 'CurtainController@deleteAction')->middleware('auth:api');
 
-//Schedules routes
-Route::get('/curtains/{curtain}/schedules', 'ScheduleController@getAllAction');
-Route::post('/curtains/{curtain}/schedules/', 'ScheduleController@postAction')->middleware('auth:api')->middleware('auth:api');
-Route::get('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@getAction')->middleware('auth:api');
-Route::put('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@putAction')->middleware('auth:api');
-Route::patch('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@patchAction')->middleware('auth:api');
-Route::delete('/curtains/{curtain}/schedules/{schedule}', 'ScheduleController@deleteAction')->middleware('auth:api');
+//Route::middleware('auth:api')->group(function () {
+    Route::prefix('curtains')->group(function () {
+        Route::get      ('',            'CurtainController@index');
+        Route::get      ('/{curtain}',  'CurtainController@show');
+        Route::post     ('',            'CurtainController@store');
+        Route::put      ('/{curtain}',  'CurtainController@update');
+        Route::patch    ('/{curtain}',  'CurtainController@patch');
+        Route::delete   ('/{curtain}',  'CurtainController@delete');
+    });
 
-//Days routes
-Route::get('/schedules/{schedule}/days', 'WeekdayController@getAllAction')->middleware('auth:api');
-Route::get('/schedules/{schedule}/days/{weekday}', 'WeekdayController@getAction')->middleware('auth:api');
-Route::put('/schedules/{schedule}/days/{weekday}', 'WeekdayController@putAction')->middleware('auth:api');
+    Route::prefix('curtains/{curtain}/schedules')->group(function () {
+        Route::get      ('',            'ScheduleController@index');
+        Route::post     ('',            'ScheduleController@update');
+        Route::get      ('/{schedule}', 'ScheduleController@show');
+        Route::put      ('/{schedule}', 'ScheduleController@update');
+        Route::patch    ('/{schedule}', 'ScheduleController@patch');
+        Route::delete   ('/{schedule}', 'ScheduleController@delete');
+    });
+
+    Route::prefix('/schedules/{schedule}/days')->group(function () {
+        Route::get(''           , 'WeekdayController@index');
+        Route::get('/{weekday}',  'WeekdayController@show');
+        Route::put('/{weekday}',  'WeekdayController@update');
+    });
+//});
 
 Route::fallback(function(){
     return response()->json(['error' => 'url not found'], 400);
