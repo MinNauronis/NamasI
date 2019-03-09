@@ -22,14 +22,14 @@ use Illuminate\Support\Facades\Route;
 Route::post('/registration', 'SecurityController@createUser');
 Route::post('/disconnection', 'SecurityController@logout')->middleware('auth:api');
 
-
+//api/curtains/1
 //Route::middleware('auth:api')->group(function () {
     Route::prefix('curtains')->group(function () {
         Route::get      ('',            'CurtainController@index');
         Route::get      ('/{curtain}',  'CurtainController@show');
         Route::post     ('',            'CurtainController@store');
-        Route::put      ('/{curtain}',  'CurtainController@update');
-        Route::patch    ('/{curtain}',  'CurtainController@patch');
+        //Route::put      ('/{curtain}',  'CurtainController@update');
+        Route::patch    ('/{curtain}',  'CurtainController@update');
         Route::delete   ('/{curtain}',  'CurtainController@delete');
     });
 

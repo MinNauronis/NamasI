@@ -13,12 +13,12 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\User::class, function (Faker $faker) {
+$factory->define(App\Weekday::class, function (Faker $faker) {
     return [
-        'username' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'remember_token' => str_random(10),
+        'schedule_id' => factory(\App\Schedule::class)->id,
+        'owner_id' => factory(\App\User::class)->id,
+        'weekday' => $faker->unique()->numberBetween(0, 6),
+        'open_time' => $faker->time(),
+        'close_time' => $faker->time(),
     ];
 });

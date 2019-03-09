@@ -15,12 +15,17 @@ class CreateWeekdaysTable extends Migration
     {
         Schema::create('weekdays', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('schedule_id');
+            $table->unsignedInteger('schedule_id');
+            $table->unsignedInteger('owner_id');
             $table->integer('weekday');
             $table->string('mode')->default('sun');
-            $table->time('openTime')->nullable();
-            $table->time('closeTime')->nullable();
+            $table->time('open_time')->nullable();
+            $table->time('close_time')->nullable();
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users');
+
+            $table->unique(['schedule_id', 'weekday']);
         });
     }
 

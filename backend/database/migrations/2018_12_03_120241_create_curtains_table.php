@@ -15,14 +15,15 @@ class CreateCurtainsTable extends Migration
     {
         Schema::create('curtains', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->unsignedInteger('owner_id');
             $table->string('title');
-            $table->string('microControllerIp')->nullable();
-            $table->boolean('isClose')->default(false);
-            $table->boolean('isTurnOn')->default(false);
+            $table->string('micro_controller_id')->nullable();
+            $table->boolean('is_close')->default(false);
+            $table->boolean('is_activated')->default(false);
             $table->string('mode')->default('auto');
-            $table->integer('selectSchedule_id')->nullable()->default(null);
             $table->timestamps();
+
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 

@@ -1,7 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CurtainStoreRequest;
+use App\Http\Requests\CurtainUpdateRequest;
+use App\Http\Resources\CurtainResource;
 use App\Schedule;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -12,39 +16,45 @@ use Illuminate\Http\Request;
 
 class CurtainController extends Controller
 {
-    public function getAllAction(Request $request)
+    public function index()
     {
-        //TODO only for user
-        $curtains = Curtain::all();//->where('user_id', 1);
-        return new JsonResponse(['curtains' => $curtains], JsonResponse::HTTP_OK);
+        $user = auth()->user();
+        $curtains = $user->curtains;
+
+        return new JsonResponse(CurtainResource::collection($curtains), JsonResponse::HTTP_OK);
     }
 
-    public function getAction(Request $request, Curtain $curtain)
+    public function show(Curtain $curtain)
     {
-        //TODO
-        /*if($curtain->user_id() !== user)
-        {
-            return new JsonResponse(['curtain' => null], JsonResponse::HTTP_NOT_FOUND);
-        }*/
-
-        return new JsonResponse(['curtain' => $curtain], JsonResponse::HTTP_OK);
+        return new JsonResponse(new CurtainResource($curtain), JsonResponse::HTTP_OK);
     }
 
-    public function postAction(Request $request)
+    public function store(CurtainStoreRequest $request)
     {
-        $badResponse = $this->validateCurtain($request, true);
-        if (isset($badResponse)) {
-            return $badResponse;
-        }
+        $user = auth()->user();
 
         $curtain = new Curtain();
-        //TODO user....
-        //$curtain->user_id = $request->user()->id;
-        $curtain->user_id = 1;
-        $curtain = $this->setCurtain($curtain, $request, true);
+        $curtain->owner_id = $user->id;
+        $curtain->title = $request['title'];
+        $curtain->micro_controller_id = $request['micro_controller_id'];
+        $curtain->is_activated = $request['is_activated'];
         $curtain->save();
 
-        return new JsonResponse(['curtain' => $curtain], JsonResponse::HTTP_CREATED);
+        return new JsonResponse(new CurtainResource($curtain), JsonResponse::HTTP_CREATED);
+    }
+
+    public function update(CurtainUpdateRequest $request, Curtain $curtain)
+    {
+        $curtain->update($request->all());
+
+        return new JsonResponse(new CurtainResource($curtain), JsonResponse::HTTP_OK);
+    }
+
+    public function delete(Curtain $curtain)
+    {
+        $curtain->delete();
+
+        return new JsonResponse(new CurtainResource($curtain), JsonResponse::HTTP_OK);
     }
 
     /**
@@ -60,7 +70,7 @@ class CurtainController extends Controller
                 'microControllerIp' => 'bail|nullable|regex:/^[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5].[0-2][0-5][0-5]$/',
                 'isClose' => 'bail|boolean',
                 'isTurnOn' => 'bail|boolean',
-                'mode' => Rule::in(['off', 'auto', 'manual']),
+                'mode' => Rule::in(['auto', 'manual']),
                 'selectSchedule_id' => 'bail|nullable|numeric',
             ]);
         } else {
@@ -102,58 +112,11 @@ class CurtainController extends Controller
             }
         }
 
-        if($scheduleId === null) {
+        if ($scheduleId === null) {
             $curtain->selectSchedule_id = null;
         }
 
 
         return $curtain;
-    }
-
-    public function putAction(Request $request, Curtain $curtain)
-    {
-        $badResponse = $this->validateCurtain($request, false);
-        if (isset($badResponse)) {
-            return $badResponse;
-        }
-
-        $oldCurtain = clone $curtain;
-        $curtain = $this->setCurtain($curtain, $request, false);
-        $curtain->save();
-
-        return new JsonResponse(
-            ['curtain' => $curtain, 'oldCurtain' => $oldCurtain],
-            JsonResponse::HTTP_OK);
-    }
-
-    public function patchAction(Request $request, Curtain $curtain)
-    {
-        $badResponse = $this->validateCurtain($request, false);
-        if (isset($badResponse)) {
-            return $badResponse;
-        }
-
-        $oldCurtain = clone $curtain;
-        $curtain = $this->setCurtain($curtain, $request, false);
-        $curtain->save();
-
-        return new JsonResponse(
-            ['curtain' => $curtain, 'oldCurtain' => $oldCurtain],
-            JsonResponse::HTTP_OK);
-    }
-
-    public function deleteAction(Request $request, Curtain $curtain)
-    {
-        $oldCurtain = clone $curtain;
-        $schedules = $curtain->getSchedules;
-        foreach ($schedules as $schedule ){
-            app('App\Http\Controllers\ScheduleController')->delete($schedule);
-        }
-
-        $curtain->delete();
-
-        return new JsonResponse(
-            ['deletedCurtain' => $oldCurtain],
-            JsonResponse::HTTP_OK);
     }
 }

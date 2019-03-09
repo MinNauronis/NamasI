@@ -38,8 +38,8 @@ class User extends Authenticatable
     /**
      * User's curtains
      */
-    public function getCurtains()
+    public function curtains()
     {
-        return $this->hasMany('App\Curtain');
+        return $this->hasMany('App\Curtain', 'owner_id', 'id');
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Validator;
 use App\Curtain;
 use App\Schedule;
@@ -11,14 +12,14 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
-    public function getAllAction(Request $request, Curtain $curtain)
+    public function index(Request $request, Curtain $curtain)
     {
         $curtainId = $curtain->id;
         $schedules = Schedule::where('curtain_id', '=', $curtainId)->get();
         return new JsonResponse(['schedules' => $schedules], JsonResponse::HTTP_OK);
     }
 
-    public function getAction(Request $request, Curtain $curtain, Schedule $schedule)
+    public function show(Request $request, Curtain $curtain, Schedule $schedule)
     {
         if($schedule->curtain_id !== $curtain->id)
         {
@@ -28,7 +29,7 @@ class ScheduleController extends Controller
         return new JsonResponse(['schedule' => $schedule], JsonResponse::HTTP_OK);
     }
 
-    public function postAction(Request $request, Curtain $curtain)
+    public function store(Request $request, Curtain $curtain)
     {
         $badResponse = $this->validateSchedule($request, true);
         if (isset($badResponse)) {

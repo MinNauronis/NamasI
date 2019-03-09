@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 Use Validator;
 use App\Schedule;
 use App\Weekday;
@@ -9,9 +10,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class WeekdayController
+class WeekdayController extends Controller
 {
-    public function getAllAction(Request $request, Schedule $schedule)
+    public function index(Schedule $schedule)
     {
         $scheduleId = $schedule->id;
         $days = Weekday::where('schedule_id', '=', $scheduleId)->get();
@@ -19,7 +20,7 @@ class WeekdayController
         return new JsonResponse(['days' => $days], JsonResponse::HTTP_OK);
     }
 
-    public function getAction(Request $request, Schedule $schedule, Weekday $weekday)
+    public function show(Schedule $schedule, Weekday $weekday)
     {
         if($weekday->schedule_id !== $schedule->id)
         {
@@ -29,7 +30,7 @@ class WeekdayController
         return new JsonResponse(['day' => $weekday], JsonResponse::HTTP_OK);
     }
 
-    public function putAction(Request $request, Schedule $schedule, Weekday $weekday)
+    public function update(Request $request, Schedule $schedule, Weekday $weekday)
     {
         $oldDay = clone $weekday;
 

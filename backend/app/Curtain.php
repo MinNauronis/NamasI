@@ -6,51 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Curtain extends Model
 {
-    protected $fillable = [
-        'title',
-        'microControllerIp',
-        'isClose',
-        'isTurnOn',
-        'mode',
-        'selectSchedule_id',
+    const MODE_AUTO = 'auto';
+    const MODE_MANUAL = 'manual';
+
+    const MODES = [
+        self::MODE_AUTO,
+        self::MODE_MANUAL
     ];
 
-    protected $visible = [
-        'id',
-        'title',
-        'microControllerIp',
-        'mode',
-        'selectSchedule_id',
-        'isClose',
-    ];
+    protected $guarded = ['owner_id'];
 
-    /*protected $hidden = [
-        'user_id',
-        'created_at',
-        'updated_at'
-    ];*/
-
-    /**
-     * Curtain's schedules
-     */
-    public function getSchedules()
+    public function schedules()
     {
-        return $this->hasMany('App\Schedule');
+        return $this->hasMany('App\Schedule', );
     }
 
-    /**
-     * Curtain's user
-     */
-    public function getUser()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
 
-    /**
-     * Curtain's selected schedule
-     */
-    public function getSelectedSchedule()
+    public function get_selected_schedule()
     {
-        return $this->hasOne('App\Schedule', 'selectSchedule_id');
+        return $this->hasOne('App\Schedule', 'select_schedule_id', 'id');
     }
+
+
 }
