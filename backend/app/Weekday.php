@@ -6,29 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Weekday extends Model
 {
-    protected $fillable = [
-      'weekday',
-      'mode',
-      'openTime',
-      'closeTime'
+    const MODE_SUN = 'sun';
+    const MODE_TIME = 'time';
+    const MODE_AUTO = 'auto';
+
+    const MODES = [
+        self::MODE_SUN,
+        self::MODE_TIME,
+        self::MODE_AUTO,
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'schedule_id'
-    ];
+    protected $guarded = ['owner_id', 'schedule_id'];
 
-    /**
-     * Weekday's schedule
-     */
-    public function getSchedule()
+    public function schedule()
     {
-        return $this->belongsTo('App\Schedule');
+        return $this->belongsTo(Schedule::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 }

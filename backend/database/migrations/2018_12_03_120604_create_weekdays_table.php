@@ -24,7 +24,7 @@ class CreateWeekdaysTable extends Migration
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users');
-
+            $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->unique(['schedule_id', 'weekday']);
         });
     }

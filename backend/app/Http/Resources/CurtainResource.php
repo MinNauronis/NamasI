@@ -15,6 +15,7 @@ class CurtainResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'micro_controller_id' => $this->micro_controller_id,
             'is_close' => $this->is_close,

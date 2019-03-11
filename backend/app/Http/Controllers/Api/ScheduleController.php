@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ScheduleStoreRequest;
+use App\Http\Requests\ScheduleUpdateRequest;
+use App\Http\Resources\ScheduleResource;
 use Validator;
 use App\Curtain;
 use App\Schedule;
@@ -12,141 +15,58 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
-    public function index(Request $request, Curtain $curtain)
+    public function index(Curtain $curtain)
     {
-        $curtainId = $curtain->id;
-        $schedules = Schedule::where('curtain_id', '=', $curtainId)->get();
-        return new JsonResponse(['schedules' => $schedules], JsonResponse::HTTP_OK);
+        $schedules = $curtain->schedules;
+
+        return new JsonResponse(ScheduleResource::collection($schedules), JsonResponse::HTTP_OK);
     }
 
-    public function show(Request $request, Curtain $curtain, Schedule $schedule)
+    public function show(Curtain $curtain, Schedule $schedule)
     {
-        if($schedule->curtain_id !== $curtain->id)
-        {
-            return new JsonResponse(['schedule' => null], JsonResponse::HTTP_NOT_FOUND);
+        if ($schedule->curtain_id !== $curtain->id) {
+            return new JsonResponse(null, JsonResponse::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(['schedule' => $schedule], JsonResponse::HTTP_OK);
+        return new JsonResponse(new ScheduleResource($schedule), JsonResponse::HTTP_OK);
     }
 
-    public function store(Request $request, Curtain $curtain)
-    {
-        $badResponse = $this->validateSchedule($request, true);
-        if (isset($badResponse)) {
-            return $badResponse;
-        }
-
-        $schedule = $this->createSchedule($curtain, $request);
-
-        return new JsonResponse(['schedule' => $schedule], JsonResponse::HTTP_CREATED);
-    }
-
-    /**
-     * @param Request $request
-     * @param bool $hasCreate
-     * @return JsonResponse|null
-     */
-    private function validateSchedule(Request $request, bool $hasCreate = true)
-    {
-        if ($hasCreate) {
-            $validator = Validator::make($request->all(), [
-                'title' => 'bail|required|string|max:190',
-                'image' => 'bail|nullable|mimes:jpeg,bmp,png',
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'title' => 'bail|string|max:190',
-                'image' => 'bail|nullable|mimes:jpeg,bmp,png',
-            ]);
-        }
-
-        if ($validator->fails()) {
-            return new JsonResponse(['errors' => $validator->errors()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        return null;
-    }
-
-    public function putAction(Request $request, Curtain $curtain, Schedule $schedule)
-    {
-        $badResponse = $this->validateSchedule($request, false);
-        if (isset($badResponse)) {
-            return $badResponse;
-        }
-
-        $oldSchedule = clone $schedule;
-
-        $schedule = $this->updateSchedule($schedule, $request);
-
-        return new JsonResponse(
-            ['schedule' => $schedule, 'oldSchedule' => $oldSchedule],
-            JsonResponse::HTTP_OK);
-    }
-
-    public function patchAction(Request $request, Curtain $curtain, Schedule $schedule)
-    {
-        $badResponse = $this->validateSchedule($request, false);
-        if (isset($badResponse)) {
-            return $badResponse;
-        }
-
-        $oldSchedule = clone $schedule;
-
-        $schedule = $this->updateSchedule($schedule, $request);
-
-        return new JsonResponse(
-            ['schedule' => $schedule, 'oldSchedule' => $oldSchedule],
-            JsonResponse::HTTP_OK);
-    }
-
-    public function deleteAction(Request $request, Curtain $curtain, Schedule $schedule)
-    {
-        $oldSchedule = clone $schedule;
-        $this->delete($schedule);
-
-        return new JsonResponse(
-            ['deletedSchedule' => $oldSchedule],
-            JsonResponse::HTTP_OK);
-    }
-
-    public function delete(Schedule $schedule) {
-        $days = $schedule->getWeekdays;
-
-        foreach ($days as $day) {
-            $day->delete();
-        }
-        $schedule->delete();
-    }
-
-    private function createSchedule(Curtain $curtain, Request $request): Schedule
+    public function store(ScheduleStoreRequest $request, Curtain $curtain)
     {
         $schedule = new Schedule();
-
         $schedule->curtain_id = $curtain->id;
-        $schedule->title = $request->input('title');
-        if ($request->input('image'))
-            $schedule->image = $request->input('image');
+        $schedule->owner_id = $curtain->owner->id;
+        $schedule->title = $request['title'];
+        $schedule->image = 'Please convert it to image, null allowed'; //todo Image::convert($request['image'])  ar pan.
         $schedule->save();
 
-        for ($i = 1; $i < 8; $i++) {
-            $day = new Weekday();
-            $day->schedule_id = $schedule->id;
-            $day->weekday = $i;
-            $day->save();
-        }
-
-        return $schedule;
+        return new JsonResponse(new ScheduleResource($schedule), JsonResponse::HTTP_CREATED);
     }
 
-    private function updateSchedule(Schedule $schedule, Request $request): Schedule
+    public function update(ScheduleUpdateRequest $request, Curtain $curtain, Schedule $schedule)
     {
-        if ($request->input('title'))
-            $schedule->title = $request->input('title');
-        if ($request->input('image'))
-            $schedule->image = $request->input('image');
+        if ($schedule->curtain->id !== $curtain->id) {
+            return new JsonResponse(null, JsonResponse::HTTP_NOT_FOUND);
+        }
 
-        $schedule->save();
+        if (isset($request['image'])) {
+            //todo update image (delete old, insert new)
+            $request['image'] = 'New url to image';
+        }
 
-        return $schedule;
+        $schedule->update($request->all());
+
+        return new JsonResponse(new ScheduleResource($schedule), JsonResponse::HTTP_OK);
+    }
+
+    public function delete(Curtain $curtain, Schedule $schedule)
+    {
+        if ($schedule->curtain->id !== $curtain->id) {
+            return new JsonResponse(null, JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $schedule->delete();
+
+        return new JsonResponse(new ScheduleResource($schedule), JsonResponse::HTTP_OK);
     }
 }

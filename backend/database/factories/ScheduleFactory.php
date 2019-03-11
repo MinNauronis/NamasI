@@ -14,9 +14,12 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\Schedule::class, function (Faker $faker) {
+
+    $curtain = factory(\App\Curtain::class)->create();
+
     return [
-        'curtain_id' => factory(\App\Curtain::class)->id,
-        'owner_id' => factory(\App\User::class)->id,
+        'curtain_id' => $curtain,
+        'owner_id' => $curtain->owner,
         'title' => $faker->title,
     ];
 });

@@ -6,39 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
-    protected $fillable = [
-        'title',
-        'image'
-    ];
+    protected $guarded = ['owner_id'];
 
-    /*protected $hidden = [
-        'curtain_id',
-        'created_at',
-        'updated_at'
-    ];*/
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'curtain_id',
-        'created_at',
-        'updated_at'
-    ];
-    /**
-     * Schedule's curtain
-     */
-    public function getCurtain()
+    public function curtain()
     {
         return $this->belongsTo('App\Curtain');
     }
 
-    /**
-     * Schedule's weekdays
-     */
-    public function getWeekdays()
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
+    }
+
+    public function weekdays()
     {
         return $this->hasMany('App\Weekday');
     }

@@ -35,17 +35,17 @@ Route::post('/disconnection', 'SecurityController@logout')->middleware('auth:api
 
     Route::prefix('curtains/{curtain}/schedules')->group(function () {
         Route::get      ('',            'ScheduleController@index');
-        Route::post     ('',            'ScheduleController@update');
+        Route::post     ('',            'ScheduleController@store');
         Route::get      ('/{schedule}', 'ScheduleController@show');
-        Route::put      ('/{schedule}', 'ScheduleController@update');
-        Route::patch    ('/{schedule}', 'ScheduleController@patch');
+        //Route::put      ('/{schedule}', 'ScheduleController@update');
+        Route::patch    ('/{schedule}', 'ScheduleController@update');
         Route::delete   ('/{schedule}', 'ScheduleController@delete');
     });
 
     Route::prefix('/schedules/{schedule}/days')->group(function () {
-        Route::get(''           , 'WeekdayController@index');
-        Route::get('/{weekday}',  'WeekdayController@show');
-        Route::put('/{weekday}',  'WeekdayController@update');
+        Route::get  (''           , 'WeekdayController@index');
+        Route::get  ('/{weekday}',  'WeekdayController@show');
+        Route::patch('/{weekday}',  'WeekdayController@update');
     });
 //});
 

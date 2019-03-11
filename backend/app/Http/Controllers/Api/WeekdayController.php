@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\WeekdayUpdateRequest;
+use App\Http\Resources\WeekdayResource;
 Use Validator;
 use App\Schedule;
 use App\Weekday;
@@ -14,56 +16,28 @@ class WeekdayController extends Controller
 {
     public function index(Schedule $schedule)
     {
-        $scheduleId = $schedule->id;
-        $days = Weekday::where('schedule_id', '=', $scheduleId)->get();
+        $weekdays = $schedule->weekdays;
 
-        return new JsonResponse(['days' => $days], JsonResponse::HTTP_OK);
+        return new JsonResponse(WeekdayResource::collection($weekdays), JsonResponse::HTTP_OK);
     }
 
     public function show(Schedule $schedule, Weekday $weekday)
     {
-        if($weekday->schedule_id !== $schedule->id)
-        {
-            return new JsonResponse(['day' => null], JsonResponse::HTTP_NOT_FOUND);
+        if ($weekday->schedule_id !== $schedule->id) {
+            return new JsonResponse(new WeekdayResource($weekday), JsonResponse::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(['day' => $weekday], JsonResponse::HTTP_OK);
+        return new JsonResponse(new WeekdayResource($weekday), JsonResponse::HTTP_OK);
     }
 
-    public function update(Request $request, Schedule $schedule, Weekday $weekday)
+    public function update(WeekdayUpdateRequest $request, Schedule $schedule, Weekday $weekday)
     {
-        $oldDay = clone $weekday;
-
-        if ($request->input('mode'))
-            $weekday->mode = $request->input('mode');
-        if ($request->input('openTime'))
-            $weekday->openTime = $request->input('openTime');
-        if ($request->input('closeTime'))
-            $weekday->closeTime = $request->input('closeTime');
-        $weekday->save();
-
-        return new JsonResponse(
-            ['day' => $weekday, 'oldDay' => $oldDay],
-            JsonResponse::HTTP_OK);
-    }
-
-    /**
-     * @param Request $request
-     * @param bool $hasCreate
-     * @return JsonResponse|null
-     */
-    private function validateWeekday(Request $request, bool $hasCreate = true)
-    {
-        $validator = Validator::make($request->all(), [
-            'mode' =>       Rule::in(['sun', 'time', 'skip']),
-            'openTime' =>   'bail|nullable|date_format:"H:i:s"',
-            'closeTime' =>  'bail|nullable|date_format:"H:i:s"',
-        ]);
-
-        if ($validator->fails()) {
-            return new JsonResponse(['errors' => $validator->errors()], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        if ($weekday->schedule_id !== $schedule->id) {
+            return new JsonResponse(new WeekdayResource($weekday), JsonResponse::HTTP_NOT_FOUND);
         }
 
-        return null;
+        $weekday->update($request->all());
+
+        return new JsonResponse(new WeekdayResource($weekday), JsonResponse::HTTP_OK);
     }
 }

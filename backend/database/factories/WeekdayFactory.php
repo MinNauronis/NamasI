@@ -14,10 +14,13 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\Weekday::class, function (Faker $faker) {
+
+    $schedule = factory(\App\Schedule::class)->create();
+
     return [
-        'schedule_id' => factory(\App\Schedule::class)->id,
-        'owner_id' => factory(\App\User::class)->id,
-        'weekday' => $faker->unique()->numberBetween(0, 6),
+        'schedule_id' => $schedule->id,
+        'owner_id' => $schedule->owner_id,
+        'weekday' => 8,
         'open_time' => $faker->time(),
         'close_time' => $faker->time(),
     ];

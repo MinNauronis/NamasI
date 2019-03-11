@@ -21,9 +21,9 @@ class Curtain extends Model
         return $this->hasMany('App\Schedule', );
     }
 
-    public function user()
+    public function owner()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'owner_id', 'id');
     }
 
     public function get_selected_schedule()

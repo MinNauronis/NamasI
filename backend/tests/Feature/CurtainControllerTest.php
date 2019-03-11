@@ -37,7 +37,7 @@ class CurtainControllerTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
-        $curtains = factory(Curtain::class, 3)->create(['owner_id' => $user->id]);
+        factory(Curtain::class, 3)->create(['owner_id' => $user->id]);
 
         $this->actingAs($user)
             ->json('GET', 'api/curtains')
@@ -53,7 +53,7 @@ class CurtainControllerTest extends TestCase
         $curtains = factory(Curtain::class, 3)->create(['owner_id' => $user->id]);
         $curtain = Curtain::find($curtains[0]->id);
 
-        $response =  $this->actingAs($user)
+        $this->actingAs($user)
             ->json('GET', 'api/curtains/' . $curtain->id)
             ->assertJsonFragment([
                 'micro_controller_id' => $curtain->micro_controller_id,
