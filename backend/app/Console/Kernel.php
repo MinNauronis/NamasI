@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\CollectDHTValuesJob;
+use App\Jobs\CollectLDRValuesJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +28,10 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->job(new CollectDHTValuesJob(), 'dht')->everyThirtyMinutes();
+        $schedule->job(new CollectLDRValuesJob(), 'ldr')->everyThirtyMinutes();
+        //$schedule->job(new TestJob(), 'testing')->everyMinute();
+        //$schedule->job(new TestJob2(), 'second test query')->everyFiveMinutes();
     }
 
     /**

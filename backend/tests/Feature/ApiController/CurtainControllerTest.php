@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Curtain;
 use App\Http\Resources\CurtainResource;
+use App\Leds;
 use App\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -99,5 +100,46 @@ class CurtainControllerTest extends TestCase
             'micro_controller_id' => $curtain['micro_controller_id'],
             'is_close' => $curtain['is_close'],
         ]);
+    }
+
+    /** @test */
+    public function create_leds_on_curtain_creation()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $attributes = [
+            'title' => 'My testing curtain',
+            'micro_controller_id' => '255.255.255.255',
+            'is_activated' => true,
+        ];
+
+        $this->actingAs($user)
+            ->json('POST', 'api/curtains/', $attributes);
+
+        $this->assertDatabaseHas('leds', ['curtain_id' => Curtain::all()->last()->id]);
+    }
+
+    /** @test */
+    public function delete_leds_on_curtain_deletion()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $attributes = [
+            'title' => 'My testing curtain',
+            'micro_controller_id' => '255.255.255.255',
+            'is_activated' => true,
+        ];
+        $this->actingAs($user)
+            ->json('POST', 'api/curtains/', $attributes);
+        $this->actingAs($user)
+            ->json('POST', 'api/curtains/', $attributes);
+        $ledsCount = Leds::all()->count();
+
+        $this->actingAs($user)
+            ->json('DELETE', 'api/curtains/' . Curtain::all()->last()->id);
+
+        self::assertCount($ledsCount-1, Leds::all());
     }
 }

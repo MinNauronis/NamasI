@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WeekdayUpdateRequest;
 use App\Http\Resources\WeekdayResource;
-Use Validator;
 use App\Schedule;
 use App\Weekday;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class WeekdayController extends Controller
 {

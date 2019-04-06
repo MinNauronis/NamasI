@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Curtain;
+use App\Leds;
+use App\Observers\CurtainObserver;
+use App\Observers\LedsObserver;
 use App\Observers\ScheduleObserver;
 use App\Schedule;
 use Illuminate\Support\Facades\Schema;
@@ -19,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(144);
 
         Schedule::observe(ScheduleObserver::class);
+        Leds::observe(LedsObserver::class);
+        Curtain::observe(CurtainObserver::class);
     }
 
     /**

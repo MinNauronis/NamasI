@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ScheduleStoreRequest;
 use App\Http\Requests\ScheduleUpdateRequest;
 use App\Http\Resources\ScheduleResource;
-use Validator;
 use App\Curtain;
 use App\Schedule;
-use App\Weekday;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
